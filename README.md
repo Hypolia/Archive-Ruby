@@ -25,7 +25,7 @@ Presentation of Hypolia Api Rest for <b>dev</b>elopers 🧑‍💻👩‍💻�
 Status: <b>Development ⚙️</b><br>
 For <b>Hypolia Inc</b><br>
 <sub>Made by <a href="https://github.com/NathaelB">MrNathael</a></sub><br>
-<img width="2000" height="0">
+<img width="0" height="0">
 </td>
 </tbody>
 </table>
