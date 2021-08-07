@@ -2,7 +2,8 @@
 
 import User from "App/Models/User";
 import {HttpContextContract} from "@ioc:Adonis/Core/HttpContext";
-import UserValidator from "App/Validators/UserValidator";
+import StoreValidator from "App/Validators/users/StoreValidator";
+import UpdateValidator from "App/Validators/users/UpdateValidator";
 
 export default class UsersController {
   public async index() {
@@ -22,10 +23,22 @@ export default class UsersController {
 
   public async store({ request }: HttpContextContract) {
     console.log(request.all())
-    const data = await request.validate(UserValidator)
-
+    const data = await request.validate(StoreValidator)
     const user = await User.create(data)
 
     return { user }
+  }
+
+  public async update({ request, params }: HttpContextContract) {
+    const user = await User.findOrFail(params.id)
+    const roles = await request.input('roles')
+    const data = await request.validate(UpdateValidator)
+
+    await user.merge(data).save()
+    if (roles) {
+      await user.related('roles').sync(roles)
+    }
+
+    return { message: 'Le compte a été mis à jour' }
   }
 }
