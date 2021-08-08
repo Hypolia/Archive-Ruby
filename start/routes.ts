@@ -27,4 +27,5 @@ Route.get('/', async () => {
 
 Route.group(() => {
   Route.resource('user', 'UsersController').apiOnly().middleware({})
+  Route.resource('discord', 'DiscordsController').apiOnly().middleware({})
 }).prefix('api')
