@@ -5,14 +5,14 @@ export default class Users extends BaseSchema {
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
+      table.string('id').primary()
       table.string('uuid').notNullable()
       table.string('username').notNullable()
       table.string('email')
       table.integer('coins')
       table.integer('pb')
-      table.boolean('is_ban')
-      table.boolean('is_link')
+      table.boolean('banned')
+      table.boolean('linked')
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
