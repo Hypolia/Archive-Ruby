@@ -1,13 +1,19 @@
 import { DateTime } from 'luxon'
-import {BaseModel, column, ManyToMany, manyToMany} from '@ioc:Adonis/Lucid/Orm'
+import {BaseModel, beforeCreate, column, ManyToMany, manyToMany} from '@ioc:Adonis/Lucid/Orm'
 import Permission from "App/Models/Permission";
+import Generate from "../../utils/GenerateUUID";
 
 export default class Role extends BaseModel {
   @column({ isPrimary: true })
-  public id: number
+  public id: string
+
+  @beforeCreate()
+  public static async createUUID (model: Role) {
+    model.id = Generate.generateUUID()
+  }
 
   @column()
-  public slug: string
+  public label: string
 
   @column()
   public name: string
@@ -26,4 +32,5 @@ export default class Role extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
 }
