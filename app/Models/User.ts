@@ -1,11 +1,18 @@
 import { DateTime } from 'luxon'
-import {BaseModel, column, ManyToMany, manyToMany} from '@ioc:Adonis/Lucid/Orm'
+import {BaseModel, beforeCreate, column, ManyToMany, manyToMany} from '@ioc:Adonis/Lucid/Orm'
 import Role from "App/Models/Role";
 import Permission from "App/Models/Permission";
+import Generate from "../../utils/GenerateUUID";
+import Discord from "App/Models/Discord";
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
-  public id: number
+  public id: string
+
+  @beforeCreate()
+  public static async createUUID (model: User) {
+    model.id = Generate.generateUUID()
+  }
 
   /**
    * UUID Minecraft:
@@ -31,14 +38,14 @@ export default class User extends BaseModel {
   public email: string
 
   @column()
-  public isBan: boolean
+  public banned: boolean
 
   /**
    * Si le compte est relié à
    * discord
    */
   @column()
-  public isLink: boolean
+  public linked: boolean
 
   @manyToMany(() => Role)
   public roles: ManyToMany<typeof Role>
@@ -46,10 +53,19 @@ export default class User extends BaseModel {
   @manyToMany(() => Permission)
   public permissions: ManyToMany<typeof Permission>
 
+  @manyToMany(() => Discord)
+  public discord: ManyToMany<typeof  Discord>
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  /*protected generateUuid(): void {
+    this.id = Generate.generateUUID()
+  }*/
+
+
 
 }
