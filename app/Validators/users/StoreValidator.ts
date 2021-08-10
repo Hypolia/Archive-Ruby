@@ -31,8 +31,8 @@ export default class StoreValidator {
     //password: schema.string({ trim: true }, [rules.confirmed()]),
     coins: schema.number(),
     pb: schema.number(),
-    is_ban: schema.boolean(),
-    is_link: schema.boolean(),
+    banned: schema.boolean(),
+    linked: schema.boolean(),
   })
 
 	/**
