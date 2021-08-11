@@ -11,13 +11,22 @@ export default class DiscordsController {
   }
 
   public async show({ params }: HttpContextContract) {
-    return  Discord.find(params.userId)
+    return  Discord.findBy("user_id", params.id)
   }
 
   public async store({ request }: HttpContextContract) {
     const data = await request.validate(StoreValidator)
 
     return await Discord.create(data)
+  }
+
+  public async computeIfAbsent({ params, request }: HttpContextContract) {
+    const user = await Discord.findBy('user_id', params.id)
+    if(!user) {
+      const data = await request.validate(StoreValidator)
+      return await Discord.create(data)
+    }
+
   }
 
 /*  public async update({ request, params }: HttpContextContract) {

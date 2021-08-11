@@ -13,15 +13,24 @@ export default class UsersController {
   }
 
   public async show({ params }: HttpContextContract) {
-    return User.query().where('id', params.id).preload('roles', (role) => {
+    return User.findBy('uuid', params.id)
+    /*return User.query().where('id', params.id).preload('roles', (role) => {
       role.orderBy('permission_level', 'desc')
-    })
+    })*/
   }
 
   public async store({ request }: HttpContextContract) {
     const data = await request.validate(StoreValidator)
 
     return await User.create(data)
+  }
+
+  public async computeIfAbsent({ params, request }: HttpContextContract) {
+    const user = await User.findBy('uuid', params.id)
+    if (!user) {
+      const data = await request.validate(StoreValidator)
+      return await User.create(data)
+    }
   }
 
   public async update({ request, params }: HttpContextContract) {
