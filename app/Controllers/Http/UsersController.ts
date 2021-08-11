@@ -43,7 +43,7 @@ export default class UsersController {
 
   /**
    * Method isPresent | GET
-   * ------------------------------------------------------
+   * ------------------------------
    * Method that returns false or true if the user is
    * present if yes or no
    * @param params
@@ -91,8 +91,9 @@ export default class UsersController {
    * information with the UpdateValidator.
    * @param request
    * @param params
+   * @param response
    */
-  public async update({ request, params }: HttpContextContract) {
+  public async update({ request, params, response }: HttpContextContract) {
     const user = await User.find(params.id)
     const data = await request.validate(UpdateValidator)
 
@@ -100,15 +101,14 @@ export default class UsersController {
     if (data.roles) {
       await user?.related('roles').sync(data.roles)
     }
-
-    return { message: 'Le compte a été mis à jour' }
+    return response.ok("Le compte a été mis à jour")
   }
 
   /**
    * Method destroy | DESTROY
    * ------------------------------
    * Retrieves the User and deletes
-   * it from the 'user' table
+   * it from the 'users' table
    * @param params
    * @param response
    */
