@@ -3,23 +3,22 @@ import {HttpContextContract} from "@ioc:Adonis/Core/HttpContext";
 import StoreValidator from "App/Validators/users/StoreValidator";
 import UpdateValidator from "App/Validators/users/UpdateValidator";
 
-/**
- * ------------------------------------------------------
- *  UsersController
- *
- *  Author: @NathaelB
- *  For: @Hypolia
- * ------------------------------------------------------
+/*
+|--------------------------------------------------------------------------
+| Users Controller
+|--------------------------------------------------------------------------
+|
+| Author: @NathaelB
  */
 export default class UsersController {
 
-  /**
-   * Method index | GET
-   * ------------------------------
-   * Retrieves all User objects present in the 'users' table.
-   * the preload function allows you to load the relationships
-   * here 'roles' which can be sorted in descending order according
-   * to the permission_level.
+  /*
+  |--------------------------------------------------------------------------
+  | Method index | GET
+  |--------------------------------------------------------------------------
+  | Récupère tout les objets présent dans la table 'user'
+  | en les triant par ordre décroissant de leurs permission_level
+  | de leurs rôles
    */
   public async index() {
     return User.query().preload('roles', (role) => {
@@ -27,39 +26,38 @@ export default class UsersController {
     })
   }
 
-  /**
-   * Method show | GET
-   * ------------------------------
-   * Method that returns a User object according to
-   * a defined parameter (id, uuid, corners, ...)
-   * @param params
+  /*
+  |--------------------------------------------------------------------------
+  | Method show | GET
+  |--------------------------------------------------------------------------
+  | Récupère un objet sous un JSON de la table 'user'
+  | sous un paramètre 'username'
    */
   public async show({ params }: HttpContextContract) {
-    return User.findBy('uuid', params.id)
+    return User.findBy('username', params.id)
     /*return User.query().where('id', params.id).preload('roles', (role) => {
       role.orderBy('permission_level', 'desc')
     })*/
   }
 
-  /**
-   * Method isPresent | GET
-   * ------------------------------
-   * Method that returns false or true if the user is
-   * present if yes or no
-   * @param params
+  /*
+  |--------------------------------------------------------------------------
+  | Method isPresent | GET
+  |--------------------------------------------------------------------------
+  | Récupère un boolean, selon si l'objet recherché
+  | est bien présent dans la table 'user'
    */
   public async isPresent({ params}: HttpContextContract) {
-    const user = await User.findBy('uuid', params.id)
+    const user = await User.findBy('username', params.id)
     return !!user
   }
 
-  /**
-   * Method store | POST
-   * ------------------------------
-   * Sends a request that the StoreValidator
-   * creates the User object in the 'users'
-   * table with several parameters.
-   * @param request
+  /*
+  |--------------------------------------------------------------------------
+  | Method store | POST
+  |--------------------------------------------------------------------------
+  | Envoie une requête via le StoreValidator pour créer un
+  | objet User dans la table 'user' avec plusieurs paramètres
    */
   public async store({ request }: HttpContextContract) {
     const data = await request.validate(StoreValidator)
@@ -67,14 +65,13 @@ export default class UsersController {
     return await User.create(data)
   }
 
-  /**
-   * Method computeIfAbsent | POST
-   * ------------------------------
-   * Sends a request to check if the user is already
-   * created according to the indicated parameters,
-   * if it is not created it creates it
-   * @param params
-   * @param request
+  /*
+  |--------------------------------------------------------------------------
+  | Method computeIfAbsent | POST
+  |--------------------------------------------------------------------------
+  | Envoie une requête via le StoreValidator pour créer un
+  | objet User dans la table 'user' avec plusieurs paramètres.
+  | Vérifie si l'objet est déjà créer, si oui il ne fait rien.
    */
   public async computeIfAbsent({ params, request }: HttpContextContract) {
     const user = await User.findBy('uuid', params.id)
@@ -84,14 +81,12 @@ export default class UsersController {
     }
   }
 
-  /**
-   * Method update | PUT
-   * ------------------------------
-   * Modifies the User's optional
-   * information with the UpdateValidator.
-   * @param request
-   * @param params
-   * @param response
+  /*
+  |--------------------------------------------------------------------------
+  | Method update | PUT
+  |--------------------------------------------------------------------------
+  | Permet de mettre à jour un utilisateur selon un ou plusieurs
+  | paramètres
    */
   public async update({ request, params, response }: HttpContextContract) {
     const user = await User.find(params.id)
@@ -104,13 +99,11 @@ export default class UsersController {
     return response.ok("Le compte a été mis à jour")
   }
 
-  /**
-   * Method destroy | DESTROY
-   * ------------------------------
-   * Retrieves the User and deletes
-   * it from the 'users' table
-   * @param params
-   * @param response
+  /*
+  |--------------------------------------------------------------------------
+  | Method destroy | DESTROY
+  |--------------------------------------------------------------------------
+  | Supprime un objet dans la table 'user'
    */
   public async destroy({ params, response }: HttpContextContract) {
     const user = await User.find(params.id)
