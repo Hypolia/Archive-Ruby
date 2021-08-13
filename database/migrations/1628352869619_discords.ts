@@ -1,5 +1,12 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
+/*
+|--------------------------------------------------------------------------
+| Discords Migrations
+|--------------------------------------------------------------------------
+|
+| Author: @NathaelB
+ */
 export default class Discords extends BaseSchema {
   protected tableName = 'discords'
 
@@ -9,10 +16,8 @@ export default class Discords extends BaseSchema {
       table.string('user_id').notNullable().unique()
       table.integer('level')
       table.integer('exp')
+      table.boolean('linked')
 
-      /**
-       * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
-       */
       table.timestamps(true, true)
       //table.timestamp('created_at', { useTz: true })
       //table.timestamp('updated_at', { useTz: true })
