@@ -1,4 +1,4 @@
-import { schema, rules } from '@ioc:Adonis/Core/Validator'
+import {schema} from '@ioc:Adonis/Core/Validator'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class StoreValidator {
@@ -25,14 +25,16 @@ export default class StoreValidator {
 	 *    ```
 	 */
   public schema = schema.create({
+    /*uuid: schema.string({trim: true}, [rules.uuid(), rules.unique({
+      table: 'minecrafts',
+      column: 'uuid'
+    })]),*/
+    uuid: schema.string({trim: true}),
     username: schema.string({trim: true}),
-    email: schema.string({ trim: true }, [rules.email(), rules.unique({ table: 'users', column: 'email' })]),
-    password: schema.string({ trim: true }, [rules.confirmed()]),
-    avatar: schema.string({trim: true}),
-    credits: schema.number(),
-    votes: schema.number(),
     banned: schema.boolean(),
-    remember_me_token: schema.string({trim: true}),
+    linked: schema.boolean(),
+    coins: schema.number(),
+    duration: schema.number(),
   })
 
 	/**

@@ -27,7 +27,7 @@ export default class StoreValidator {
   public schema = schema.create({
     user_id: schema.string({ trim: true }),
     level: schema.number(),
-    exp: schema.number()
+    exp: schema.number(),
   })
 
 	/**
