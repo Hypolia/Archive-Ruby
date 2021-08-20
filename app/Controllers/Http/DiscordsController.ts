@@ -1,5 +1,5 @@
 import {HttpContextContract} from "@ioc:Adonis/Core/HttpContext";
-import Discord from "App/Models/Discord";
+import Discord from "App/Models/discord/Discord";
 import StoreValidator from "App/Validators/discord/StoreValidator";
 import UpdateValidator from "App/Validators/discord/UpdateValidator";
 import User from "App/Models/User";
