@@ -17,6 +17,7 @@ export default class Discords extends BaseSchema {
       table.integer('level')
       table.integer('exp')
       table.boolean('linked')
+      table.string('lang')
 
       table.timestamps(true, true)
       //table.timestamp('created_at', { useTz: true })
