@@ -3,7 +3,7 @@ import {BaseModel, beforeCreate, column, ManyToMany, manyToMany} from '@ioc:Adon
 import Role from "App/Models/Role";
 import Permission from "App/Models/Permission";
 import Generate from "../../utils/GenerateUUID";
-import Discord from "App/Models/Discord";
+import Discord from "App/Models/discord/Discord";
 import Minecraft from "App/Models/Minecraft";
 
 /*

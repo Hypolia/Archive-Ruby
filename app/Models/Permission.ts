@@ -2,6 +2,16 @@ import { DateTime } from 'luxon'
 import {BaseModel, beforeCreate, column} from '@ioc:Adonis/Lucid/Orm'
 import Generate from "../../utils/GenerateUUID";
 
+/*
+|--------------------------------------------------------------------------
+| Permission Model
+|--------------------------------------------------------------------------
+|
+| Le model Permission caractérise un droit sur le serveur,
+| elle peut être attribué à un rôle ou un user
+|
+| Author: @NathaelB
+ */
 export default class Permission extends BaseModel {
   @column({ isPrimary: true })
   public id: string
@@ -23,7 +33,4 @@ export default class Permission extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  protected generateUuid(): void {
-    this.id = Generate.generateUUID()
-  }
 }

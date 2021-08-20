@@ -3,6 +3,17 @@ import {BaseModel, beforeCreate, column, ManyToMany, manyToMany} from '@ioc:Adon
 import Permission from "App/Models/Permission";
 import Generate from "../../utils/GenerateUUID";
 
+
+/*
+|--------------------------------------------------------------------------
+| Role Model
+|--------------------------------------------------------------------------
+|
+| Le model Role permet de gérer l'ensemble des roles présents
+| sur Hypolia, où on peut lui attribuer une ou des permissions.
+|
+| Author: @NathaelB
+ */
 export default class Role extends BaseModel {
   @column({ isPrimary: true })
   public id: string
