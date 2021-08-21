@@ -26,6 +26,7 @@ export default class MinecraftsController {
     return Minecraft.query().preload('roles', (role) => {
       role.orderBy('permission_level', 'desc')
     })
+    //return Minecraft.all()
   }
 
   /*

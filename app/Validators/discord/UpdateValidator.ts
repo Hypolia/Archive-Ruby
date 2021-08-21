@@ -1,6 +1,12 @@
 import { schema } from '@ioc:Adonis/Core/Validator'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
+/**
+ * Validator pour modifier l'objet 'Discord' qui représente le compte
+ * discord de l'utilisateur
+ *
+ * Author: @Nathael
+ */
 export default class UpdateValidator {
   constructor (protected ctx: HttpContextContract) {
   }
