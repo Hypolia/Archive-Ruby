@@ -26,7 +26,7 @@ export default class StoreValidator {
 	 */
   public schema = schema.create({
     /*uuid: schema.string({trim: true}, [rules.uuid(), rules.unique({
-      table: 'minecrafts',
+      table: 'minecraft',
       column: 'uuid'
     })]),*/
     uuid: schema.string({trim: true}),
