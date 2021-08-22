@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import {BaseModel, beforeCreate, column, ManyToMany, manyToMany} from '@ioc:Adonis/Lucid/Orm'
-import Generate from "../../utils/GenerateUUID";
+import Generate from "../../../utils/GenerateUUID";
 import Role from "App/Models/Role";
 import Permission from "App/Models/Permission";
 

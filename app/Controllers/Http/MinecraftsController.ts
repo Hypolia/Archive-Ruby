@@ -1,9 +1,9 @@
 // import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-import Minecraft from "App/Models/Minecraft";
+import Minecraft from "App/Models/minecraft/Minecraft";
 import {HttpContextContract} from "@ioc:Adonis/Core/HttpContext";
-import StoreValidator from "App/Validators/minecrafts/StoreValidator";
-import UpdateValidator from "App/Validators/minecrafts/UpdateValidator";
+import StoreValidator from "App/Validators/minecraft/account/StoreValidator";
+import UpdateValidator from "App/Validators/minecraft/account/UpdateValidator";
 
 /*
 |--------------------------------------------------------------------------
