@@ -2,22 +2,23 @@ import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 /*
 |--------------------------------------------------------------------------
-| Discords Migrations
+| Minecraft Migrations
 |--------------------------------------------------------------------------
 |
 | Author: @NathaelB
  */
-export default class Discords extends BaseSchema {
-  protected tableName = 'discords'
+export default class Minecrafts extends BaseSchema {
+  protected tableName = 'minecraft'
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.string('id').primary()
-      table.string('user_id').notNullable().unique()
-      table.integer('level')
-      table.integer('exp')
+      table.string('uuid').unique().notNullable()
+      table.string('username').unique().notNullable()
+      table.boolean('banned')
       table.boolean('linked')
-      table.string('lang')
+      table.integer('coins')
+      table.integer('duration')
 
       table.timestamps(true, true)
       //table.timestamp('created_at', { useTz: true })

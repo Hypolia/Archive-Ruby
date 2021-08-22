@@ -1,25 +1,24 @@
 import { DateTime } from 'luxon'
 import {BaseModel, beforeCreate, column} from '@ioc:Adonis/Lucid/Orm'
-import Generate from "../../utils/GenerateUUID";
+import Generate from "../../../../utils/GenerateUUID";
 
-export default class Discord extends BaseModel {
+export default class Collection extends BaseModel {
   @column({ isPrimary: true })
   public id: string
 
   @beforeCreate()
-  public static async createUUID (model: Discord) {
+  public static async createUUID (model: Collection) {
     model.id = Generate.generateUUID()
   }
 
   @column()
-  public userId: number
+  public name: string
 
   @column()
   public level: number
 
   @column()
-  public exp: number
-
+  public progression: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

@@ -1,36 +1,39 @@
 import { DateTime } from 'luxon'
 import {BaseModel, beforeCreate, column} from '@ioc:Adonis/Lucid/Orm'
-import Generate from "../../utils/GenerateUUID";
+import Generate from "../../../utils/GenerateUUID";
 
 /*
 |--------------------------------------------------------------------------
-| Permission Model
+| Ticket Model
 |--------------------------------------------------------------------------
 |
-| Le model Permission caractérise un droit sur le serveur,
-| elle peut être attribué à un rôle ou un user
+| Le model Ticket permet de répertorier tout les
+| tickets en cours, et permet donc de définir une
+| limite de ticket par Utilisateur
 |
 | Author: @NathaelB
  */
-export default class Permission extends BaseModel {
+export default class Ticket extends BaseModel {
   @column({ isPrimary: true })
   public id: string
 
   @beforeCreate()
-  public static async createUUID (model: Permission) {
+  public static async createUUID (model: Ticket) {
     model.id = Generate.generateUUID()
   }
 
   @column()
-  public label: string
+  public userId: string
 
   @column()
-  public name: string
+  public channelId: string
+
+  @column()
+  public username: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
-
 }

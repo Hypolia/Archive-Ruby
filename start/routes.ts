@@ -28,4 +28,9 @@ Route.get('/', async () => {
 Route.group(() => {
   Route.resource('user', 'UsersController').apiOnly().middleware({})
   Route.resource('discord', 'DiscordsController').apiOnly().middleware({})
+  Route.resource('minecraft', 'MinecraftsController').apiOnly().middleware({})
+
+
+  Route.post('/discord/compute-if-absent/:id', 'DiscordsController.computeIfAbsent')
+  Route.post('/user/compute-if-absent/:id', 'UsersController.computeIfAbsent')
 }).prefix('api')
