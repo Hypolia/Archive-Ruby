@@ -8,7 +8,7 @@ import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 | Author: @NathaelB
  */
 export default class Minecrafts extends BaseSchema {
-  protected tableName = 'minecraft'
+  protected tableName = 'minecrafts'
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {

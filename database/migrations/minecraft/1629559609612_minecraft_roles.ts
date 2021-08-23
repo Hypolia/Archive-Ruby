@@ -6,7 +6,7 @@ export default class MinecraftRoles extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.string('minecraft_id').references('id').inTable('minecraft')
+      table.string('minecraft_id').references('id').inTable('minecrafts')
       table.string('role_id').references('id').inTable('roles')
 
       /**
