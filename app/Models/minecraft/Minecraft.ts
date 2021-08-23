@@ -3,6 +3,7 @@ import {BaseModel, beforeCreate, column, ManyToMany, manyToMany} from '@ioc:Adon
 import Generate from "../../../utils/GenerateUUID";
 import Role from "App/Models/Role";
 import Permission from "App/Models/Permission";
+import Job from "App/Models/minecraft/data/Job";
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +40,9 @@ export default class Minecraft extends BaseModel {
 
   @column()
   public duration: number
+
+  @manyToMany(() => Job)
+  public job: ManyToMany<typeof Job>
 
   @manyToMany(() => Role)
   public roles: ManyToMany<typeof Role>
