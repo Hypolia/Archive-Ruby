@@ -42,7 +42,7 @@ export default class Minecraft extends BaseModel {
   public duration: number
 
   @manyToMany(() => Job)
-  public job: ManyToMany<typeof Job>
+  public jobs: ManyToMany<typeof Job>
 
   @manyToMany(() => Role)
   public roles: ManyToMany<typeof Role>
