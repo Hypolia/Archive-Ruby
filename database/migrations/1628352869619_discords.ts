@@ -12,7 +12,7 @@ export default class Discords extends BaseSchema {
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
-      table.string('id').primary()
+      table.string('id', 60).primary()
       table.string('user_id').notNullable().unique()
       table.integer('level')
       table.integer('exp')

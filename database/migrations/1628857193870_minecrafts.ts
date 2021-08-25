@@ -12,7 +12,7 @@ export default class Minecrafts extends BaseSchema {
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
-      table.string('id').primary()
+      table.string('id', 60).primary()
       table.string('uuid').unique().notNullable()
       table.string('username').unique().notNullable()
       table.boolean('banned')
