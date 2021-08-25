@@ -3,6 +3,9 @@ import {BaseModel, beforeCreate, column, ManyToMany, manyToMany} from '@ioc:Adon
 import Generate from "../../../utils/GenerateUUID";
 import Role from "App/Models/Role";
 import Permission from "App/Models/Permission";
+import Job from "App/Models/minecraft/data/Job";
+import Island from "App/Models/minecraft/data/Island";
+import Stat from "App/Models/minecraft/data/Stat";
 
 /*
 |--------------------------------------------------------------------------
@@ -40,12 +43,36 @@ export default class Minecraft extends BaseModel {
   @column()
   public duration: number
 
+  /*
+  |--------------------------------------------------------------------------
+  | Minecraft RelationShips | @manyToMany
+  |--------------------------------------------------------------------------
+  | - Island
+  | - Job
+  | - Role
+  | - Permission
+  | - Stat
+   */
+  @manyToMany(() => Island)
+  public island: ManyToMany<typeof Island>
+
+  @manyToMany(() => Job)
+  public jobs: ManyToMany<typeof Job>
+
+  @manyToMany(() => Stat)
+  public stats: ManyToMany<typeof Stat>
+
   @manyToMany(() => Role)
   public roles: ManyToMany<typeof Role>
 
   @manyToMany(() => Permission)
   public permissions: ManyToMany<typeof Permission>
 
+  /**
+   * Column for date
+   * - Create DateTime
+   * - Update DateTime
+   */
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

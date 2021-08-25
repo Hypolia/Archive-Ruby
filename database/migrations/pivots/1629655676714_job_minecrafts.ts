@@ -1,13 +1,13 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
-export default class MinecraftRoles extends BaseSchema {
-  protected tableName = 'minecraft_role'
+export default class JobMinecrafts extends BaseSchema {
+  protected tableName = 'job_minecraft'
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.string('minecraft_id').references('id').inTable('minecraft')
-      table.string('role_id').references('id').inTable('roles')
+      table.string('minecraft_id').references('id').inTable('minecrafts')
+      table.string('job_id').references('id').inTable('jobs')
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
