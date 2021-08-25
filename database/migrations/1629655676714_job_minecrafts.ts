@@ -8,6 +8,7 @@ export default class JobMinecrafts extends BaseSchema {
       table.increments('id')
       table.string('minecraft_id').references('id').inTable('minecrafts')
       table.string('job_id').references('id').inTable('jobs')
+      table.unique(['minecraft_id', 'job_id'])
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
