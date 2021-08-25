@@ -59,8 +59,8 @@ export default class Minecraft extends BaseModel {
   @manyToMany(() => Job, {
     pivotTable: 'job_minecraft',
     localKey: 'id',
-    pivotForeignKey: 'minecrafts_id',
-    pivotRelatedForeignKey: 'jobs_id',
+    pivotForeignKey: 'minecraft_id',
+    pivotRelatedForeignKey: 'job_id',
     relatedKey: 'id'
   })
   public jobs: ManyToMany<typeof Job>

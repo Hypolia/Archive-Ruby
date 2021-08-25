@@ -88,8 +88,8 @@ export default class Job extends BaseModel {
   @manyToMany(() => Minecraft, {
     pivotTable: 'job_minecraft',
     localKey: 'id',
-    pivotForeignKey: 'jobs_id',
-    pivotRelatedForeignKey: 'minecrafts_id',
+    pivotForeignKey: 'job_id',
+    pivotRelatedForeignKey: 'minecraft_id',
     relatedKey: 'id'
   })
   public minecraft: ManyToMany<typeof Minecraft>
