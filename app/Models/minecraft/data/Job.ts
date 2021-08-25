@@ -3,6 +3,16 @@ import {BaseModel, beforeCreate, column, ManyToMany, manyToMany} from '@ioc:Adon
 import Generate from "../../../../utils/GenerateUUID";
 import Minecraft from "App/Models/minecraft/Minecraft";
 
+/*
+|--------------------------------------------------------------------------
+| Job for Account Minecraft Model
+|--------------------------------------------------------------------------
+|
+| Le model Job les statistiques des différents
+| métiers du compte Minecraft
+|
+| Author: @NathaelB
+ */
 export default class Job extends BaseModel {
   @column({ isPrimary: true })
   public id: string
@@ -75,7 +85,13 @@ export default class Job extends BaseModel {
   @column()
   public alchimiste_exp: number
 
-  @manyToMany(() => Minecraft)
+  @manyToMany(() => Minecraft, {
+    pivotTable: 'job_minecraft',
+    localKey: 'id',
+    pivotForeignKey: 'jobs_id',
+    pivotRelatedForeignKey: 'minecrafts_id',
+    relatedKey: 'id'
+  })
   public minecraft: ManyToMany<typeof Minecraft>
 
   @column.dateTime({ autoCreate: true })
