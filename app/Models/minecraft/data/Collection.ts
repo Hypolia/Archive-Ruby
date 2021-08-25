@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
-import {BaseModel, beforeCreate, column} from '@ioc:Adonis/Lucid/Orm'
+import {BaseModel, beforeCreate, column, ManyToMany, manyToMany} from '@ioc:Adonis/Lucid/Orm'
 import Generate from "../../../../utils/GenerateUUID";
+import Island from "App/Models/minecraft/data/Island";
 
 export default class Collection extends BaseModel {
   @column({ isPrimary: true })
@@ -19,6 +20,9 @@ export default class Collection extends BaseModel {
 
   @column()
   public progression: number
+
+  @manyToMany(() => Island)
+  public island: ManyToMany<typeof Island>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
