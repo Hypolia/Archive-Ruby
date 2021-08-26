@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import {BaseModel, beforeCreate, column, ManyToMany, manyToMany} from '@ioc:Adonis/Lucid/Orm'
+import {BaseModel, beforeCreate, column, HasOne, hasOne, ManyToMany, manyToMany} from '@ioc:Adonis/Lucid/Orm'
 import Generate from "../../../utils/GenerateUUID";
 import Role from "App/Models/Role";
 import Permission from "App/Models/Permission";
@@ -43,30 +43,25 @@ export default class Minecraft extends BaseModel {
   @column()
   public duration: number
 
+
   /*
   |--------------------------------------------------------------------------
-  | Minecraft RelationShips | @manyToMany
+  | Minecraft RelationShips | @hasOne
   |--------------------------------------------------------------------------
-  | - Island
-  | - Job
-  | - Role
-  | - Permission
-  | - Stat
+  | ├── Island
+  | ├── Job
+  | ├── Role
+  | ├── Permission
+  | ├── Stat
    */
   @manyToMany(() => Island)
   public island: ManyToMany<typeof Island>
 
-  @manyToMany(() => Job, {
-    pivotTable: 'job_minecraft',
-    localKey: 'id',
-    pivotForeignKey: 'minecraft_id',
-    pivotRelatedForeignKey: 'job_id',
-    relatedKey: 'id'
-  })
-  public jobs: ManyToMany<typeof Job>
+  @hasOne(() => Job)
+  public jobs: HasOne<typeof Job>
 
-  @manyToMany(() => Stat)
-  public stats: ManyToMany<typeof Stat>
+  @hasOne(() => Stat)
+  public stats: HasOne<typeof Stat>
 
   @manyToMany(() => Role)
   public roles: ManyToMany<typeof Role>
@@ -84,4 +79,5 @@ export default class Minecraft extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
 }
