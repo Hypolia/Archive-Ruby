@@ -1,7 +1,6 @@
 import { DateTime } from 'luxon'
-import {BaseModel, beforeCreate, column, ManyToMany, manyToMany} from '@ioc:Adonis/Lucid/Orm'
+import {BaseModel, beforeCreate, column} from '@ioc:Adonis/Lucid/Orm'
 import Generate from "../../../../utils/GenerateUUID";
-import Minecraft from "App/Models/minecraft/Minecraft";
 
 /*
 |--------------------------------------------------------------------------
@@ -85,14 +84,8 @@ export default class Job extends BaseModel {
   @column()
   public alchimiste_exp: number
 
-  @manyToMany(() => Minecraft, {
-    pivotTable: 'job_minecraft',
-    localKey: 'id',
-    pivotForeignKey: 'job_id',
-    pivotRelatedForeignKey: 'minecraft_id',
-    relatedKey: 'id'
-  })
-  public minecraft: ManyToMany<typeof Minecraft>
+  @column()
+  public minecraftId: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

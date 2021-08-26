@@ -2,6 +2,16 @@ import { DateTime } from 'luxon'
 import {BaseModel, beforeCreate, column} from '@ioc:Adonis/Lucid/Orm'
 import Generate from "../../../../utils/GenerateUUID";
 
+/*
+|--------------------------------------------------------------------------
+| Stat for Account Minecraft Model
+|--------------------------------------------------------------------------
+|
+| Le model Stat représente les statistiques du compte
+| Minecraft.
+|
+| Author: @NathaelB
+ */
 export default class Stat extends BaseModel {
   @column({ isPrimary: true })
   public id: string
@@ -10,6 +20,9 @@ export default class Stat extends BaseModel {
   public static async createUUID (model: Stat) {
     model.id = Generate.generateUUID()
   }
+
+  @column()
+  public minecraftId: string
 
   @column()
   public health: number
