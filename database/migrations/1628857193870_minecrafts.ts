@@ -12,13 +12,14 @@ export default class Minecrafts extends BaseSchema {
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
-      table.string('id', 60).primary()
+      table.string('id').primary()
       table.string('uuid').unique().notNullable()
       table.string('username').unique().notNullable()
       table.boolean('banned')
       table.boolean('linked')
       table.integer('coins')
       table.integer('duration')
+
 
       table.timestamps(true, true)
       //table.timestamp('created_at', { useTz: true })
