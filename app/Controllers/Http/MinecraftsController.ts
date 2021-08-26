@@ -4,7 +4,6 @@ import Minecraft from "App/Models/minecraft/Minecraft";
 import {HttpContextContract} from "@ioc:Adonis/Core/HttpContext";
 import StoreValidator from "App/Validators/minecraft/account/StoreValidator";
 import UpdateValidator from "App/Validators/minecraft/account/UpdateValidator";
-import Job from "App/Models/minecraft/data/Job";
 
 /*
 |--------------------------------------------------------------------------
@@ -69,8 +68,10 @@ export default class MinecraftsController {
   public async store({ request }: HttpContextContract) {
     const data = await request.validate(StoreValidator)
     const user = await Minecraft.create(data)
-    const job = await Job.create({
-      "alchimiste_exp": 0,
+
+    const minecraftUser = await Minecraft.findBy('uuid', user.uuid)
+    await minecraftUser!.related('jobs').create({
+      alchimiste_exp: 0,
       "combat_exp": 0,
       "foraging_exp": 0,
       "mineur_exp": 0,
@@ -86,7 +87,18 @@ export default class MinecraftsController {
       "enchanteur_level": 1,
       "fishing_level": 1
     })
-    await user!.related('jobs').attach([job.id])
+    await minecraftUser!.related('stats').create({
+      health: 100,
+      defense: 20,
+      strenght: 100,
+      speed: 100,
+      critChance: 50,
+      critDamage: 50,
+      intelligence: 100,
+      miningFortune: 0,
+      farmingFortune: 0,
+      combatFortune: 0
+    })
   }
 
   /*
