@@ -63,57 +63,49 @@ export default class MinecraftsController {
   | objet Minecraft dans la table 'minecraft' avec plusieurs paramètres
   |--------------------------------------------------------------------------
    */
-  public async store({ request }: HttpContextContract) {
-    const data = await request.validate(StoreValidator)
-    const user = await Minecraft.create(data)
-
-    const minecraftUser = await Minecraft.findBy('uuid', user.uuid)
-    await minecraftUser!.related('jobs').create({
-      alchimiste_exp: 0,
-      "combat_exp": 0,
-      "foraging_exp": 0,
-      "mineur_exp": 0,
-      "farmeur_exp": 0,
-      "enchanteur_exp": 0,
-      "fishing_exp": 0,
-
-      "alchimiste_level": 1,
-      "combat_level": 1,
-      "foraging_level": 1,
-      "mineur_level": 1,
-      "farmeur_level": 1,
-      "enchanteur_level": 1,
-      "fishing_level": 1
-    })
-    await minecraftUser!.related('stats').create({
-      health: 100,
-      defense: 20,
-      strenght: 100,
-      speed: 100,
-      critChance: 50,
-      critDamage: 50,
-      intelligence: 100,
-      miningFortune: 0,
-      farmingFortune: 0,
-      combatFortune: 0
-    })
-  }
-
-  /*
-  |--------------------------------------------------------------------------
-  | Method computeIfAbsent | POST
-  |--------------------------------------------------------------------------
-  | Envoie une requête via le StoreValidator pour créer un
-  | objet Minecraft dans la table 'minecraft' avec plusieurs paramètres.
-  | Vérifie si l'objet est déjà créer, si oui il ne fait rien.
-  |--------------------------------------------------------------------------
-   */
-  public async computeIfAbsent({ params, request }: HttpContextContract) {
-    const user = await Minecraft.findBy('uuid', params.id)
+  public async store({ request, response }: HttpContextContract) {
+    const user = await Minecraft.findBy('uuid', request.body().uuid)
     if (!user) {
       const data = await request.validate(StoreValidator)
-      return await Minecraft.create(data)
+      const client = await Minecraft.create(data)
+      const minecraftUser = await Minecraft.findBy('uuid', client.uuid)
+      await minecraftUser!.related('jobs').create({
+        alchimiste_exp: 0,
+        "combat_exp": 0,
+        "foraging_exp": 0,
+        "mineur_exp": 0,
+        "farmeur_exp": 0,
+        "enchanteur_exp": 0,
+        "fishing_exp": 0,
+
+        "alchimiste_level": 1,
+        "combat_level": 1,
+        "foraging_level": 1,
+        "mineur_level": 1,
+        "farmeur_level": 1,
+        "enchanteur_level": 1,
+        "fishing_level": 1
+      })
+      await minecraftUser!.related('stats').create({
+        health: 100,
+        defense: 20,
+        strenght: 100,
+        speed: 100,
+        critChance: 50,
+        critDamage: 50,
+        intelligence: 100,
+        miningFortune: 0,
+        farmingFortune: 0,
+        combatFortune: 0
+      })
+      return response.ok("[Success]: Le compte a été créé")
+    } else {
+      return response.ok("[Error]: Le compte est déjà existant")
     }
+
+    //const user = await Minecraft.create(data)
+
+
   }
 
   /*
