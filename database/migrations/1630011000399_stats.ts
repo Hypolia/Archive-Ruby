@@ -5,7 +5,7 @@ export default class Stats extends BaseSchema {
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
-      table.string('id').primary()
+      table.string('id', 60).primary()
 
       table.integer('health').notNullable()
       table.integer('defense').notNullable()
