@@ -28,9 +28,25 @@ Route.get('/', async () => {
 Route.group(() => {
   Route.resource('user', 'UsersController').apiOnly().middleware({})
   Route.resource('discord', 'DiscordsController').apiOnly().middleware({})
+
+  /*
+  |--------------------------------------------------------------------------
+  | Minecraft Route
+  |--------------------------------------------------------------------------
+  | ├── Minecraft
+  | ├── Minecraft/is-present | Return @true or @false si l'user est créé
+  | ├── Permission
+  | ├── Stat
+   */
   Route.resource('minecraft', 'MinecraftsController').apiOnly().middleware({})
 
 
   Route.post('/discord/compute-if-absent/:id', 'DiscordsController.computeIfAbsent')
   Route.post('/user/compute-if-absent/:id', 'UsersController.computeIfAbsent')
+
+
+  Route.get('/authentication/user/me', 'AuthController.user').middleware('auth')
+
+  Route.post('/authentication/api/login', 'AuthController.loginApi')
+  Route.post('/authentication/api/logout', 'AuthController.logoutApi').middleware('auth')
 }).prefix('api')
