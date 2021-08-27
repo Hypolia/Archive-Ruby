@@ -1,20 +1,16 @@
 import { DateTime } from 'luxon'
-import {BaseModel, beforeCreate, column, ManyToMany, manyToMany} from '@ioc:Adonis/Lucid/Orm'
+import {BaseModel, beforeCreate, beforeSave, column, ManyToMany, manyToMany} from '@ioc:Adonis/Lucid/Orm'
 import Role from "App/Models/Role";
 import Permission from "App/Models/Permission";
 import Generate from "../../utils/GenerateUUID";
-import Discord from "App/Models/discord/Discord";
-import Minecraft from "App/Models/minecraft/Minecraft";
+import Hash from '@ioc:Adonis/Core/Hash'
 
-/*
-|--------------------------------------------------------------------------
-| User Model
-|--------------------------------------------------------------------------
-|
-| Le model User représente le compte principal que l'utilisateur
-| pourra créer via le SiteWeb
-|
-| Author: @NathaelB
+/**
+ * Hypolia Inc | API Rest Source Code.
+ * User Model
+ *
+ * @license GPLv3
+ * @copyright NathaelB
  */
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -59,16 +55,17 @@ export default class User extends BaseModel {
   @manyToMany(() => Permission)
   public permissions: ManyToMany<typeof Permission>
 
-  @manyToMany(() => Discord)
-  public discord: ManyToMany<typeof  Discord>
-
-  @manyToMany(() => Minecraft)
-  public minecraft: ManyToMany<typeof Minecraft>
-
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @beforeSave()
+  public static async hashPassword(user: User) {
+    if (user.$dirty.password) {
+      user.password = await Hash.make(user.password)
+    }
+  }
 
 }
