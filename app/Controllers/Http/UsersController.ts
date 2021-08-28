@@ -3,12 +3,12 @@ import {HttpContextContract} from "@ioc:Adonis/Core/HttpContext";
 import StoreValidator from "App/Validators/users/StoreValidator";
 import UpdateValidator from "App/Validators/users/UpdateValidator";
 
-/*
-|--------------------------------------------------------------------------
-| Users Controller
-|--------------------------------------------------------------------------
-|
-| Author: @NathaelB
+/**
+ * Hypolia Inc | API Rest Source Code.
+ * UsersController
+ *
+ * @license GPLv3
+ * @copyright NathaelB
  */
 export default class UsersController {
 

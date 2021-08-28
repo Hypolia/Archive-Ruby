@@ -1,5 +1,14 @@
 import { DateTime } from 'luxon'
-import {BaseModel, beforeCreate, beforeSave, column, ManyToMany, manyToMany} from '@ioc:Adonis/Lucid/Orm'
+import {
+  BaseModel,
+  beforeCreate,
+  beforeSave,
+  column,
+  HasMany,
+  hasMany,
+  ManyToMany,
+  manyToMany
+} from '@ioc:Adonis/Lucid/Orm'
 import Role from "App/Models/Role";
 import Permission from "App/Models/Permission";
 import Generate from "../../utils/GenerateUUID";
@@ -47,10 +56,13 @@ export default class User extends BaseModel {
   public banned: boolean
 
   @column()
-  public rememberMeToken: string
+  public confirmationToken: string
 
-  @manyToMany(() => Role)
-  public roles: ManyToMany<typeof Role>
+  @column()
+  public recoveryToken: string
+
+  @hasMany(() => Role)
+  public roles: HasMany<typeof Role>
 
   @manyToMany(() => Permission)
   public permissions: ManyToMany<typeof Permission>
