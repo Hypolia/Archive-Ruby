@@ -103,10 +103,6 @@ export default class MinecraftsController {
     } else {
       return response.ok("[Error]: Le compte est déjà existant")
     }
-
-    //const user = await Minecraft.create(data)
-
-
   }
 
   /*
