@@ -27,7 +27,7 @@ const hashConfig: HashConfig = {
   | free to change the default value
   |
   */
-  default: Env.get('HASH_DRIVER', 'argon'),
+  default: Env.get('HASH_DRIVER', 'argon') as 'argon',
 
   list: {
     /*
@@ -65,10 +65,8 @@ const hashConfig: HashConfig = {
     | npm install phc-bcrypt
     |
     */
-    bcrypt: {
-      driver: 'bcrypt',
-      rounds: 10,
-    },
+
+
   },
 }
 
