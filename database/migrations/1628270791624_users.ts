@@ -14,16 +14,13 @@ export default class Users extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.string('id', 60).primary()
-      table.string('username').notNullable()
-      table.string('email').notNullable()
+      table.string('uuid').notNullable().unique()
+      table.string('username').notNullable().unique()
+      table.string('email').notNullable().unique()
       table.string('password').notNullable()
-      table.string('role_id')
-      table.string('avatar')
-      table.integer('credits')
-      table.integer('votes')
+      table.integer('credit')
+      table.double('coins')
       table.boolean('banned')
-      table.string('confirmation_token').unique()
-      table.string('recovery_token').unique()
 
       table.timestamps(true, true)
       //table.timestamp('created_at', { useTz: true })

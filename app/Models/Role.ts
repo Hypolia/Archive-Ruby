@@ -2,9 +2,6 @@ import { DateTime } from 'luxon'
 import {BaseModel, beforeCreate, column, ManyToMany, manyToMany} from '@ioc:Adonis/Lucid/Orm'
 import Permission from "App/Models/Permission";
 import Generate from "../../utils/GenerateUUID";
-import User from "App/Models/User";
-import Minecraft from "App/Models/minecraft/Minecraft";
-
 
 /**
  * Hypolia Inc | API Rest Source Code.
@@ -34,14 +31,16 @@ export default class Role extends BaseModel {
   @column()
   public color: string
 
+  @column()
+  public tablist: string
+
+  @column()
+  public default: boolean
+
   @manyToMany(() => Permission)
   public permissions: ManyToMany<typeof Permission>
 
-  @manyToMany(() => User)
-  public users: ManyToMany<typeof User>
 
-  @manyToMany(() => Minecraft)
-  public minecrafts: ManyToMany<typeof Minecraft>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

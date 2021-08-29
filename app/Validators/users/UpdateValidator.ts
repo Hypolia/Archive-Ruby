@@ -26,12 +26,15 @@ export default class UpdateValidator {
 	 */
   public schema = schema.create({
     username: schema.string.optional({trim: true}),
-    roles: schema.array.optional().members(schema.string()),
-    discord: schema.array.optional().members(schema.string()),
     email: schema.string.optional({ trim: true }, [rules.email(), rules.unique({ table: 'users', column: 'email' })]),
     password: schema.string.optional({ trim: true }, [rules.confirmed()]),
+    credit: schema.number.optional(),
+
     banned: schema.boolean.optional(),
     linked: schema.boolean.optional(),
+
+    roles: schema.array.optional().members(schema.string()),
+    discord: schema.array.optional().members(schema.string()),
   })
 
 	/**

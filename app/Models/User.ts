@@ -3,14 +3,8 @@ import {
   BaseModel,
   beforeCreate,
   beforeSave,
-  column,
-  HasMany,
-  hasMany,
-  ManyToMany,
-  manyToMany
+  column
 } from '@ioc:Adonis/Lucid/Orm'
-import Role from "App/Models/Role";
-import Permission from "App/Models/Permission";
 import Generate from "../../utils/GenerateUUID";
 import Hash from '@ioc:Adonis/Core/Hash'
 
@@ -30,10 +24,9 @@ export default class User extends BaseModel {
     model.id = Generate.generateUUID()
   }
 
-  /**
-   * Username Minecraft:
-   * - MrNathael
-   */
+  @column()
+  public uuid: string
+
   @column()
   public username: string
 
@@ -44,28 +37,13 @@ export default class User extends BaseModel {
   public password: string
 
   @column()
-  public avatar: string
+  public credit: number
 
   @column()
-  public credits: number
-
-  @column()
-  public votes: number
+  public coins: number
 
   @column()
   public banned: boolean
-
-  @column()
-  public confirmationToken: string
-
-  @column()
-  public recoveryToken: string
-
-  @hasMany(() => Role)
-  public roles: HasMany<typeof Role>
-
-  @manyToMany(() => Permission)
-  public permissions: ManyToMany<typeof Permission>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

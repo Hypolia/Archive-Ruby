@@ -34,7 +34,9 @@ export default class UpdateValidator {
       [rules.unique({ table: 'roles', column: 'name' }
       )]),
     permission_level: schema.number.optional(),
-    color: schema.string.optional({trim: true})
+    color: schema.string.optional({trim: true}),
+    tablist: schema.string.optional({ trim: true }),
+    default: schema.boolean.optional()
   })
 
 	/**
