@@ -60,10 +60,14 @@ export default class UsersController {
   | Envoie une requête via le StoreValidator pour créer un
   | objet User dans la table 'user' avec plusieurs paramètres
    */
-  public async store({ request }: HttpContextContract) {
-    const data = await request.validate(StoreValidator)
-
-    return await User.create(data)
+  public async store({ request, response }: HttpContextContract) {
+    const user = await User.findBy('id', request.body().email)
+    if (!user) {
+      const data = await request.validate(StoreValidator)
+      await User.create(data)
+      return response.ok("[Success]: Le compte a été créé")
+    }
+    return response.ok("[Error]: Le compte est déjà existant")
   }
 
   /*
