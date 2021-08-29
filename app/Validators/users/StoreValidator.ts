@@ -32,7 +32,6 @@ export default class StoreValidator {
     credits: schema.number(),
     votes: schema.number(),
     banned: schema.boolean(),
-    remember_me_token: schema.string({trim: true}),
   })
 
 	/**
