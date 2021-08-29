@@ -21,9 +21,10 @@ export default class UsersController {
   | de leurs rôles
    */
   public async index() {
-    return User.query().preload('roles', (role) => {
+    /*return User.query().preload('roles', (role) => {
       role.orderBy('permission_level', 'desc')
-    })
+    })*/
+    return User.all()
   }
 
   /*
@@ -93,9 +94,9 @@ export default class UsersController {
     const data = await request.validate(UpdateValidator)
 
     await user?.merge(data).save()
-    if (data.roles) {
+    /*if (data.roles) {
       await user?.related('roles').sync(data.roles)
-    }
+    }*/
     return response.ok("Le compte a été mis à jour")
   }
 
