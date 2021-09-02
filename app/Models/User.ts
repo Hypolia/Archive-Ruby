@@ -3,10 +3,12 @@ import {
   BaseModel,
   beforeCreate,
   beforeSave,
-  column
+  column, HasOne, hasOne
 } from '@ioc:Adonis/Lucid/Orm'
 import Generate from "../../utils/GenerateUUID";
 import Hash from '@ioc:Adonis/Core/Hash'
+import Job from "App/Models/Job";
+import Stat from "App/Models/Stat";
 
 /**
  * Hypolia Inc | API Rest Source Code.
@@ -44,6 +46,12 @@ export default class User extends BaseModel {
 
   @column()
   public banned: boolean
+
+  @hasOne(() => Job)
+  public jobs: HasOne<typeof Job>
+
+  @hasOne(() => Stat)
+  public stats: HasOne<typeof Stat>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
