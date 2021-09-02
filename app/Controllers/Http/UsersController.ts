@@ -67,32 +67,10 @@ export default class UsersController {
       const userCreate = await User.create(data)
       const verifUser = await User.findBy('email', userCreate.email)
       await verifUser?.related('jobs').create({
-        mineur_exp: 0,
-        mineur_level: 1,
-        farmeur_exp: 0,
-        farmeur_level: 1,
-        foraging_exp: 0,
-        foraging_level: 1,
-        fishing_exp: 0,
-        fishing_level: 1,
-        combat_exp: 0,
-        combat_level: 1,
-        enchanteur_exp: 0,
-        enchanteur_level: 1,
-        alchimiste_exp: 0,
-        alchimiste_level: 1
+        "userId": verifUser?.id
       })
       await verifUser?.related('stats').create({
-        health: 100,
-        defense: 20,
-        strenght: 10,
-        speed: 100,
-        critChance: 20,
-        critDamage: 20,
-        intelligence: 100,
-        miningFortune: 0,
-        combatFortune: 0,
-        farmingFortune: 0,
+        userId: verifUser?.id
       })
 
       return response.ok("[Success]: Le compte a été créé")

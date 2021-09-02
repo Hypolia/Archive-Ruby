@@ -1,7 +1,6 @@
 import { DateTime } from 'luxon'
-import {BaseModel, beforeCreate, column, HasOne, hasOne} from '@ioc:Adonis/Lucid/Orm'
+import {BaseModel, beforeCreate, column} from '@ioc:Adonis/Lucid/Orm'
 import Generate from "../../utils/GenerateUUID";
-import User from "App/Models/User";
 
 export default class Job extends BaseModel {
   @column({ isPrimary: true })
@@ -12,75 +11,94 @@ export default class Job extends BaseModel {
     model.id = Generate.generateUUID()
   }
 
+  @column()
+  public userId: string
+
   /*
   Mineur Job
    */
   @column()
-  public mineur_level: number
+  public mineurLevel: number
 
   @column()
-  public mineur_exp: number
+  public mineurExp: number
 
   /*
   Farmeur Job
    */
   @column()
-  public farmeur_level: number
+  public farmeurLevel: number
 
   @column()
-  public farmeur_exp: number
+  public farmeurExp: number
 
   /*
   Foraging Job
    */
   @column()
-  public foraging_level: number
+  public foragingLevel: number
 
   @column()
-  public foraging_exp: number
+  public foragingExp: number
 
   /*
   Fishing Job
    */
   @column()
-  public fishing_level: number
+  public fishingLevel: number
 
   @column()
-  public fishing_exp: number
+  public fishingExp: number
 
   /*
   Combat Job
    */
   @column()
-  public combat_level: number
+  public combatLevel: number
 
   @column()
-  public combat_exp: number
+  public combatExp: number
 
   /*
   Enchanteur Job
    */
   @column()
-  public enchanteur_level: number
+  public enchanteurLevel: number
 
   @column()
-  public enchanteur_exp: number
+  public enchanteurExp: number
 
   /*
   Alchimiste Job
    */
   @column()
-  public alchimiste_level: number
+  public alchimisteLevel: number
 
   @column()
-  public alchimiste_exp: number
-
-  @hasOne(() => User)
-  public user: HasOne<typeof User>
+  public alchimisteExp: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @beforeCreate()
+  public static async defaultValue(job: Job) {
+    job.mineurExp = 0
+    job.mineurLevel = 1
+    job.farmeurExp = 0
+    job.farmeurLevel = 1
+    job.foragingExp = 0
+    job.foragingLevel = 1
+    job.fishingExp = 0
+    job.fishingLevel = 1
+    job.combatExp = 0
+    job.combatLevel = 1
+    job.enchanteurExp = 0
+    job.enchanteurLevel = 1
+    job.alchimisteExp = 0
+    job.alchimisteLevel = 1
+  }
+
 }

@@ -13,6 +13,9 @@ export default class Stat extends BaseModel {
   }
 
   @column()
+  public userId: string
+
+  @column()
   public health: number
 
   @column()
@@ -50,4 +53,18 @@ export default class Stat extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @beforeCreate()
+  public static async defaultValue(stat: Stat) {
+    stat.health = 100
+    stat.defense = 20
+    stat.strenght = 10
+    stat.speed = 100
+    stat.critChance = 20
+    stat.critDamage = 20
+    stat.intelligence = 100
+    stat.miningFortune = 0
+    stat.combatFortune = 0
+    stat.farmingFortune = 0
+  }
 }
