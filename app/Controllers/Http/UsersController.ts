@@ -24,7 +24,10 @@ export default class UsersController {
     /*return User.query().preload('roles', (role) => {
       role.orderBy('permission_level', 'desc')
     })*/
-    return User.all()
+    return User.query()
+      .preload('stats')
+      .preload('jobs')
+      .preload('roles')
   }
 
   /*
@@ -35,7 +38,12 @@ export default class UsersController {
   | sous un paramètre 'username'
    */
   public async show({ params }: HttpContextContract) {
-    return User.findBy('username', params.id)
+    return User.query()
+      .where('username', params.id)
+      .preload('roles')
+      .preload('stats')
+      .preload('jobs')
+    //return User.findBy('username', params.id)
     /*return User.query().where('id', params.id).preload('roles', (role) => {
       role.orderBy('permission_level', 'desc')
     })*/
@@ -72,26 +80,10 @@ export default class UsersController {
       await verifUser?.related('stats').create({
         userId: verifUser?.id
       })
-
-      return response.ok("[Success]: Le compte a été créé")
+      return { verifUser }
+      //return response.ok("[Success]: Le compte a été créé")
     }
     return response.ok("[Error]: Le compte est déjà existant")
-  }
-
-  /*
-  |--------------------------------------------------------------------------
-  | Method computeIfAbsent | POST
-  |--------------------------------------------------------------------------
-  | Envoie une requête via le StoreValidator pour créer un
-  | objet User dans la table 'user' avec plusieurs paramètres.
-  | Vérifie si l'objet est déjà créer, si oui il ne fait rien.
-   */
-  public async computeIfAbsent({ params, request }: HttpContextContract) {
-    const user = await User.findBy('uuid', params.id)
-    if (!user) {
-      const data = await request.validate(StoreValidator)
-      return await User.create(data)
-    }
   }
 
   /*
@@ -104,11 +96,13 @@ export default class UsersController {
   public async update({ request, params, response }: HttpContextContract) {
     const user = await User.find(params.id)
     const data = await request.validate(UpdateValidator)
+    const roles = await request.input('roles')
 
     await user?.merge(data).save()
-    /*if (data.roles) {
-      await user?.related('roles').sync(data.roles)
-    }*/
+    if (roles) {
+      await user?.related('roles').sync(roles)
+    }
+
     return response.ok("Le compte a été mis à jour")
   }
 
