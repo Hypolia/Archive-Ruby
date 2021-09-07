@@ -41,8 +41,20 @@ Route.group(() => {
   | Role Route
   |--------------------------------------------------------------------------
   | ├── Role
+  | ├── is-present | renvoie true ou false
    */
   Route.resource('role', 'RolesController').apiOnly().middleware({})
+  Route.get('role/is-present/:id', 'RolesController.isPresent')
+
+  /*
+  |--------------------------------------------------------------------------
+  | Permission Route
+  |--------------------------------------------------------------------------
+  | ├── Permission
+  | ├── is-present | renvoie true ou false
+   */
+  Route.resource('permission', 'PermissionsController').apiOnly().middleware({})
+  Route.get('permission/is-present/:id', 'PermissionsController.isPresent')
 
   /*
     |--------------------------------------------------------------------------
