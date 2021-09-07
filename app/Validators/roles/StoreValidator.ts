@@ -25,8 +25,7 @@ export default class StoreValidator {
 	 *    ```
 	 */
   public schema = schema.create({
-    label: schema.string({ trim: true }, [rules.unique({ table: 'roles', column: 'slug' })]),
-    name: schema.string({ trim: true }, [rules.unique({ table: 'roles', column: 'slug' })]),
+    label: schema.string({ trim: true }, [rules.unique({ table: 'roles', column: 'label' })]),
     permission_level: schema.number(),
     color: schema.string({ trim: true }),
     tablist: schema.string({ trim: true }),
