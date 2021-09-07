@@ -26,8 +26,6 @@ export default class Permission extends BaseModel {
   @column()
   public label: string
 
-  @column()
-  public name: string
 
   @manyToMany(() => Role)
   public roles: ManyToMany<typeof Role>
