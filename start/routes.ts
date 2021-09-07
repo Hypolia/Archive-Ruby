@@ -31,38 +31,30 @@ Route.group(() => {
   | User Route
   |--------------------------------------------------------------------------
   | ├── User
+  | ├── is-present | renvoie true ou false
    */
   Route.resource('user', 'UsersController').apiOnly().middleware({})
-  Route.post('/user/compute-if-absent/:id', 'UsersController.computeIfAbsent')
-
-
-  /*
-  |--------------------------------------------------------------------------
-  | Discord Route
-  |--------------------------------------------------------------------------
-  | ├── Discord
-   */
-  Route.resource('discord', 'DiscordsController').apiOnly().middleware({})
-  Route.post('/discord/compute-if-absent/:id', 'DiscordsController.computeIfAbsent')
-
+  Route.get('/user/is-present/:id', 'UsersController.isPresent')
 
   /*
   |--------------------------------------------------------------------------
-  | Minecraft Route
+  | Role Route
   |--------------------------------------------------------------------------
-  | ├── Minecraft
-  | ├── Minecraft/is-present | Return @true or @false si l'user est créé
-  | ├── Permission
-  | ├── Stat
+  | ├── Role
    */
-  Route.resource('minecraft', 'MinecraftsController').apiOnly().middleware({})
-  Route.get('/minecraft/is-present/:id', 'MinecraftsController.isPresent')
+  Route.resource('role', 'RolesController').apiOnly().middleware({})
 
-
-
-
+  /*
+    |--------------------------------------------------------------------------
+    | Authentication Route
+    |--------------------------------------------------------------------------
+    | ├── User/Me | user method
+    | ├── Api/Login | loginApi method
+    | ├── Api/Logout | logoutApi method
+     */
   Route.get('/authentication/user/me', 'AuthController.user').middleware('auth')
 
   Route.post('/authentication/api/login', 'AuthController.loginApi')
   Route.post('/authentication/api/logout', 'AuthController.logoutApi').middleware('auth')
+
 }).prefix('api')
