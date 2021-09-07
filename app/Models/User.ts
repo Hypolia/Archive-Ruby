@@ -3,12 +3,14 @@ import {
   BaseModel,
   beforeCreate,
   beforeSave,
-  column, HasOne, hasOne
+  column, HasOne, hasOne, ManyToMany, manyToMany
 } from '@ioc:Adonis/Lucid/Orm'
 import Generate from "../../utils/GenerateUUID";
 import Hash from '@ioc:Adonis/Core/Hash'
 import Job from "App/Models/Job";
 import Stat from "App/Models/Stat";
+import Permission from "App/Models/Permission";
+import Role from "App/Models/Role";
 
 /**
  * Hypolia Inc | API Rest Source Code.
@@ -52,6 +54,12 @@ export default class User extends BaseModel {
 
   @hasOne(() => Stat)
   public stats: HasOne<typeof Stat>
+
+  @manyToMany(() => Permission)
+  public permissions: ManyToMany<typeof Permission>
+
+  @manyToMany(() => Role)
+  public roles: ManyToMany<typeof Role>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

@@ -1,6 +1,8 @@
 import { DateTime } from 'luxon'
-import {BaseModel, beforeCreate, column} from '@ioc:Adonis/Lucid/Orm'
+import {BaseModel, beforeCreate, column, ManyToMany, manyToMany} from '@ioc:Adonis/Lucid/Orm'
 import Generate from "../../utils/GenerateUUID";
+import Role from "App/Models/Role";
+import User from "App/Models/User";
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +28,12 @@ export default class Permission extends BaseModel {
 
   @column()
   public name: string
+
+  @manyToMany(() => Role)
+  public roles: ManyToMany<typeof Role>
+
+  @manyToMany(() => User)
+  public users: ManyToMany<typeof User>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
