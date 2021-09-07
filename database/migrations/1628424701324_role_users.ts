@@ -9,12 +9,9 @@ export default class RoleUsers extends BaseSchema {
       table.string('user_id').references('id').inTable('users')
       table.string('role_id').references('id').inTable('roles')
       table.unique(['role_id', 'user_id'])
-      /**
-       * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
-       */
+
       table.timestamps(true, true)
-      //table.timestamp('created_at', { useTz: true })
-      //table.timestamp('updated_at', { useTz: true })
+
     })
   }
 

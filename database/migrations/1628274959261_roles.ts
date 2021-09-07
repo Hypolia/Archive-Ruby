@@ -6,8 +6,7 @@ export default class Roles extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.string('id', 60).primary()
-      table.string('name')
-      table.string('prefix')
+      table.string('label').unique()
       table.integer('permission_level')
       table.string('color')
       table.boolean('default')
