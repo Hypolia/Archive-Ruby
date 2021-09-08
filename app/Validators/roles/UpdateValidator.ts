@@ -36,7 +36,9 @@ export default class UpdateValidator {
     permission_level: schema.number.optional(),
     color: schema.string.optional({trim: true}),
     tablist: schema.string.optional({ trim: true }),
-    default: schema.boolean.optional()
+    default: schema.boolean.optional(),
+
+    permissions: schema.array.optional().members(schema.string())
   })
 
 	/**

@@ -25,6 +25,8 @@ export default class StoreValidator {
 	 *    ```
 	 */
   public schema = schema.create({
+    email: schema.string({trim: true}),
+    password: schema.string({trim: true})
   })
 
 	/**

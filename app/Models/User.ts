@@ -1,16 +1,15 @@
 import { DateTime } from 'luxon'
 import {
   BaseModel,
-  beforeCreate,
-  beforeSave,
+  beforeCreate, beforeSave,
   column, HasOne, hasOne, ManyToMany, manyToMany
 } from '@ioc:Adonis/Lucid/Orm'
 import Generate from "../../utils/GenerateUUID";
-import Hash from '@ioc:Adonis/Core/Hash'
 import Job from "App/Models/Job";
 import Stat from "App/Models/Stat";
 import Permission from "App/Models/Permission";
 import Role from "App/Models/Role";
+import Hash from '@ioc:Adonis/Core/Hash'
 
 /**
  * Hypolia Inc | API Rest Source Code.

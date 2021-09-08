@@ -34,6 +34,7 @@ export default class UpdateValidator {
     linked: schema.boolean.optional(),
 
     roles: schema.array.optional().members(schema.string()),
+    permissions: schema.array.optional().members(schema.string()),
     discord: schema.array.optional().members(schema.string()),
   })
 

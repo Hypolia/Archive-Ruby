@@ -1,12 +1,12 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class PermissionUsers extends BaseSchema {
-  protected tableName = 'permission_users'
+  protected tableName = 'permission_user'
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.string('user_id').references('id').inTable('users')
+      table.string('user_id').references('id').inTable('users').onDelete('CASCADE')
       table.string('permission_id').references('id').inTable('permissions')
       table.unique(['permission_id', 'user_id'])
 
