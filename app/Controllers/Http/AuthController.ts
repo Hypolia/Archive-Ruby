@@ -7,19 +7,18 @@
  */
 import {HttpContextContract} from "@ioc:Adonis/Core/HttpContext";
 import User from "App/Models/User";
+import StoreValidator from "App/Validators/auth/StoreValidator";
 
 export default class AuthController {
 
   public async loginApi({ request, auth, response }: HttpContextContract) {
-    const email = request.input('email')
-    const password = request.input('password')
-
+    const data = await request.validate(StoreValidator)
     try {
-      const token = await auth.use('api').attempt(email, password, {
-        expiresIn: '5 days'
+      const token = await auth.use('api').attempt(data.email, data.password, {
+        expiresIn: '7days'
       })
-      return {token: token.toJSON()}
-    } catch {
+      return { token: token.toJSON() }
+    } catch (error) {
       return response.badRequest('Identifiants Incorrectes')
     }
   }
