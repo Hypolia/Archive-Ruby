@@ -28,6 +28,7 @@ export default class UsersController {
       .preload('stats')
       .preload('jobs')
       .preload('roles')
+      .preload('permissions')
   }
 
   /*
