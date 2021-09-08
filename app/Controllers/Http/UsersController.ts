@@ -43,6 +43,7 @@ export default class UsersController {
       .preload('roles')
       .preload('stats')
       .preload('jobs')
+      .preload('permissions')
     //return User.findBy('username', params.id)
     /*return User.query().where('id', params.id).preload('roles', (role) => {
       role.orderBy('permission_level', 'desc')
@@ -97,8 +98,12 @@ export default class UsersController {
     const user = await User.find(params.id)
     const data = await request.validate(UpdateValidator)
     const roles = await request.input('roles')
+    const permissions = await request.input('permissions')
 
     await user?.merge(data).save()
+    if (permissions) {
+      await user?.related('permissions').sync(permissions)
+    }
     if (roles) {
       await user?.related('roles').sync(roles)
     }

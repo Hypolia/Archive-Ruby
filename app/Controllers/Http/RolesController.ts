@@ -8,7 +8,7 @@ import UpdateValidator from "App/Validators/roles/UpdateValidator";
 export default class RolesController {
 
   public async index() {
-    return Role.all()
+    return Role.query().preload('permissions')
   }
 
   public async show({ params }: HttpContextContract) {
@@ -33,8 +33,12 @@ export default class RolesController {
   public async update({ request, params, response }) {
     const role = await Role.findBy('label', params.id)
     const data = await request.validate(UpdateValidator)
+    const permissions = await request.input('permissions')
 
     await role?.merge(data).save()
+    if (permissions) {
+      await role?.related('permissions').sync(permissions)
+    }
     return response.ok("Le rôle a été mis à jour")
   }
 
