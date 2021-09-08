@@ -1,6 +1,7 @@
 import { GuardsList } from '@ioc:Adonis/Addons/Auth'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { AuthenticationException } from '@adonisjs/auth/build/standalone'
+import User from "App/Models/User";
 
 /**
  * Auth middleware is meant to restrict un-authenticated access to a given route
@@ -31,18 +32,27 @@ export default class AuthMiddleware {
      * driver
      */
     let guardLastAttempted: string | undefined
-
     for (let guard of guards) {
       guardLastAttempted = guard
 
       if (await auth.use(guard).check()) {
+
         /**
          * Instruct auth to use the given guard as the default guard for
          * the rest of the request, since the user authenticated
          * succeeded here
          */
         auth.defaultGuard = guard
-        return true
+        const user = await User.query()
+          .where('id', auth.user!.id)
+          .preload('roles')
+          .first()
+        for (const role in user!.roles) {
+          const permissionLevel = user!.roles[role].permissionLevel
+          if (permissionLevel >= 10) {
+            return true
+          }
+        }
       }
     }
 
