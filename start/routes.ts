@@ -26,47 +26,55 @@ Route.get('/', async () => {
 
 
 Route.group(() => {
+
   /*
+  |--------------------------------------------------------------------------
+  | Authentication Route
+  |--------------------------------------------------------------------------
+  | ├── User/Me | user method
+  | ├── Api/Login | loginApi method
+  | ├── Api/Logout | logoutApi method
+   */
+  Route.get('/authentication/user/me', 'AuthController.user').middleware('auth')
+
+  Route.post('/authentication/api/login', 'AuthController.loginApi')
+  Route.post('/authentication/api/logout', 'AuthController.logoutApi').middleware('auth')
+
+
+  Route.group(() => {
+    /*
   |--------------------------------------------------------------------------
   | User Route
   |--------------------------------------------------------------------------
   | ├── User
   | ├── is-present | renvoie true ou false
    */
-  Route.resource('user', 'UsersController').apiOnly().middleware({})
-  Route.get('/user/is-present/:id', 'UsersController.isPresent')
+    Route.resource('user', 'UsersController').apiOnly().middleware({})
+    Route.get('/user/is-present/:id', 'UsersController.isPresent')
 
-  /*
-  |--------------------------------------------------------------------------
-  | Role Route
-  |--------------------------------------------------------------------------
-  | ├── Role
-  | ├── is-present | renvoie true ou false
-   */
-  Route.resource('role', 'RolesController').apiOnly().middleware({})
-  Route.get('role/is-present/:id', 'RolesController.isPresent')
-
-  /*
-  |--------------------------------------------------------------------------
-  | Permission Route
-  |--------------------------------------------------------------------------
-  | ├── Permission
-  | ├── is-present | renvoie true ou false
-   */
-  Route.resource('permission', 'PermissionsController').apiOnly().middleware({})
-  Route.get('permission/is-present/:id', 'PermissionsController.isPresent')
-
-  /*
+    /*
     |--------------------------------------------------------------------------
-    | Authentication Route
+    | Role Route
     |--------------------------------------------------------------------------
-    | ├── User/Me | user method
-    | ├── Api/Login | loginApi method
-    | ├── Api/Logout | logoutApi method
+    | ├── Role
+    | ├── is-present | renvoie true ou false
      */
-  Route.get('/authentication/user/me', 'AuthController.user').middleware('auth')
+    Route.resource('role', 'RolesController').apiOnly().middleware({})
+    Route.get('role/is-present/:id', 'RolesController.isPresent')
 
-  Route.post('/authentication/api/login', 'AuthController.loginApi')
-  Route.post('/authentication/api/logout', 'AuthController.logoutApi').middleware('auth')
+    /*
+    |--------------------------------------------------------------------------
+    | Permission Route
+    |--------------------------------------------------------------------------
+    | ├── Permission
+    | ├── is-present | renvoie true ou false
+     */
+    Route.resource('permission', 'PermissionsController').apiOnly().middleware({})
+    Route.get('permission/is-present/:id', 'PermissionsController.isPresent')
+  })
+    .middleware("auth:api")
+
+
+
 
 }).prefix('api')
