@@ -8,11 +8,15 @@ import UpdateValidator from "App/Validators/roles/UpdateValidator";
 export default class RolesController {
 
   public async index() {
-    return Role.query().preload('permissions')
+    return Role.query()
+      .preload('permissions')
   }
 
   public async show({ params }: HttpContextContract) {
-    return await Role.findBy('label', params.id)
+    return await Role.query().where('label', params.id).
+      preload('permissions')
+      .preload('minecrafts')
+    //return await Role.findBy('label', params.id)
   }
 
   public async isPresent({ params }: HttpContextContract) {
@@ -39,7 +43,7 @@ export default class RolesController {
     if (permissions) {
       await role?.related('permissions').sync(permissions)
     }
-    return response.ok("Le rôle a été mis à jour")
+    return role
   }
 
   public async destroy({ params, response}) {

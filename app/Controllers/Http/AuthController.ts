@@ -17,7 +17,7 @@ export default class AuthController {
       const token = await auth.use('api').attempt(data.email, data.password, {
         expiresIn: '7days'
       })
-      return { token: token.toJSON() }
+      return  { token: token.toJSON() }
     } catch (error) {
       return response.badRequest('Identifiants Incorrectes')
     }
@@ -29,10 +29,10 @@ export default class AuthController {
   }
 
   public async user({ auth }: HttpContextContract) {
-      await auth.authenticate()
-      return await User.query()
+      const user = await User.query()
         .where('id', auth.user!.id)
         .preload('roles')
         .first()
+      return { user }
   }
 }

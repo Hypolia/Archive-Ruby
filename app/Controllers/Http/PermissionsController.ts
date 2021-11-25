@@ -8,11 +8,16 @@ import UpdateValidator from "App/Validators/permissions/UpdateValidator";
 export default class PermissionsController {
 
   public async index() {
-    return Permission.all()
+    return Permission.query()
+      .preload('roles')
   }
 
   public async show({ params }: HttpContextContract) {
-    return await Permission.findBy('label', params.id)
+    return Permission.query()
+      .where('label', params.id)
+      .preload('roles')
+      .preload('users')
+    //return await Permission.findBy('label', params.id)
   }
 
   public async isPresent({ params }: HttpContextContract) {
@@ -20,14 +25,10 @@ export default class PermissionsController {
     return !!permission
   }
 
-  public async store({ request, response }: HttpContextContract) {
-    const permissionPresent = await Permission.findBy('label', request.body().label)
-    if (!permissionPresent) {
-      const data = await request.validate(StoreValidator)
-      const permission = await Permission.create(data)
-      return { permission }
-    }
-    return response.ok('La permission est déjà créé')
+  public async store({ request }: HttpContextContract) {
+    const data = await request.validate(StoreValidator)
+    const permission = await Permission.create(data)
+    return { permission }
   }
 
   public async update({ request, params, response }: HttpContextContract) {

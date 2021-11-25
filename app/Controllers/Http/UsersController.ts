@@ -77,7 +77,7 @@ export default class UsersController {
       const userCreate = await User.create(data)
       const verifUser = await User.findBy('email', userCreate.email)
       await verifUser?.related('jobs').create({
-        "userId": verifUser?.id
+        userId: verifUser?.id
       })
       await verifUser?.related('stats').create({
         userId: verifUser?.id
@@ -96,18 +96,10 @@ export default class UsersController {
   | paramètres
    */
   public async update({ request, params, response }: HttpContextContract) {
-    const user = await User.find(params.id)
+    const user = await User.findBy('username', params.id)
     const data = await request.validate(UpdateValidator)
-    const roles = await request.input('roles')
-    const permissions = await request.input('permissions')
-
     await user?.merge(data).save()
-    if (permissions) {
-      await user?.related('permissions').sync(permissions)
-    }
-    if (roles) {
-      await user?.related('roles').sync(roles)
-    }
+ 
 
     return response.ok("Le compte a été mis à jour")
   }
@@ -124,4 +116,5 @@ export default class UsersController {
 
     return response.ok("Le compte a été supprimé")
   }
+
 }
