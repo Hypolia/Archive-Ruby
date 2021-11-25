@@ -13,8 +13,8 @@ export default class RolesController {
   }
 
   public async show({ params }: HttpContextContract) {
-    return await Role.query().where('label', params.id).
-      preload('permissions')
+    return await Role.query().where('label', params.id)
+      .preload('permissions')
       .preload('minecrafts')
     //return await Role.findBy('label', params.id)
   }
@@ -34,7 +34,7 @@ export default class RolesController {
     return response.ok('Le rôle est déjà créé')
   }
 
-  public async update({ request, params, response }) {
+  public async update({ request, params }) {
     const role = await Role.findBy('label', params.id)
     const data = await request.validate(UpdateValidator)
     const permissions = await request.input('permissions')

@@ -25,10 +25,7 @@ export default class UsersController {
       role.orderBy('permission_level', 'desc')
     })*/
     return User.query()
-      .preload('stats')
-      .preload('jobs')
-      .preload('roles')
-      .preload('permissions')
+      .preload('discord')
   }
 
   /*
@@ -41,10 +38,8 @@ export default class UsersController {
   public async show({ params }: HttpContextContract) {
     return User.query()
       .where('username', params.id)
-      .preload('roles')
-      .preload('stats')
-      .preload('jobs')
-      .preload('permissions')
+      .preload('discord')
+
     //return User.findBy('username', params.id)
     /*return User.query().where('id', params.id).preload('roles', (role) => {
       role.orderBy('permission_level', 'desc')
@@ -76,12 +71,6 @@ export default class UsersController {
       const data = await request.validate(StoreValidator)
       const userCreate = await User.create(data)
       const verifUser = await User.findBy('email', userCreate.email)
-      await verifUser?.related('jobs').create({
-        userId: verifUser?.id
-      })
-      await verifUser?.related('stats').create({
-        userId: verifUser?.id
-      })
       return { verifUser }
       //return response.ok("[Success]: Le compte a été créé")
     }
@@ -96,9 +85,18 @@ export default class UsersController {
   | paramètres
    */
   public async update({ request, params, response }: HttpContextContract) {
-    const user = await User.findBy('username', params.id)
+    const user = await User.findBy('email', params.id)
     const data = await request.validate(UpdateValidator)
     await user?.merge(data).save()
+    if (data.discord) {
+      await user?.related('discord').create({
+        userId: user.id,
+        level: 1,
+        exp: 0,
+        discordId: data.discord.discordId,
+        username: data.discord.username,
+      })
+    }
  
 
     return response.ok("Le compte a été mis à jour")

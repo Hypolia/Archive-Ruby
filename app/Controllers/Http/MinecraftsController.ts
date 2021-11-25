@@ -9,20 +9,20 @@ export default class MinecraftsController {
 
     public async index () {
         return Minecraft.query()
-        .preload('user')
+        .preload('user', (query) => query.preload('discord'))
         .preload('jobs')
         .preload('stats')
-        .preload('roles')
+        .preload('roles', (query) => query.preload('permissions'))
         .preload('permissions')
     }
 
     public async show ({ params }: HttpContextContract) {
         return Minecraft.query()
         .where('uuid', params.id)
-        .preload('user')
+        .preload('user', (query) => query.preload('discord'))
         .preload('jobs')
         .preload('stats')
-        .preload('roles')
+        .preload('roles', (query) => query.preload('permissions'))
         .preload('permissions')
     }
 
@@ -54,6 +54,14 @@ export default class MinecraftsController {
         }
         if (data.roles) {
             await minecraft?.related('roles').sync(data.roles)
+        }
+        if (data.user) {
+            await minecraft?.related('user').create({
+                minecraftId: minecraft.id,
+                password: data.user.password,
+                email: data.user.email,
+                username: data.user.username
+            })
         }
 
         return { minecraft }
