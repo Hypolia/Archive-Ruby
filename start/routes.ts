@@ -43,14 +43,22 @@ Route.group(() => {
 
   Route.group(() => {
     /*
-  |--------------------------------------------------------------------------
-  | User Route
-  |--------------------------------------------------------------------------
-  | ├── User
-  | ├── is-present | renvoie true ou false
+    |--------------------------------------------------------------------------
+    | User Route
+    |--------------------------------------------------------------------------
+    | ├── User
+    | ├── is-present | renvoie true ou false
    */
     Route.resource('user', 'UsersController').apiOnly().middleware({})
     Route.get('/user/is-present/:id', 'UsersController.isPresent')
+
+
+    Route.resource('discord', 'DiscordsController').apiOnly().middleware({})
+    Route.get('/discord/is-present/:id', 'DiscordsController.isPresent')
+
+    Route.resource('minecraft', 'MinecraftsController').apiOnly().middleware({})
+    Route.get('/minecraft/is-present/:id', 'MinecraftsController.isPresent')
+
 
     /*
     |--------------------------------------------------------------------------
@@ -71,8 +79,11 @@ Route.group(() => {
      */
     Route.resource('permission', 'PermissionsController').apiOnly().middleware({})
     Route.get('permission/is-present/:id', 'PermissionsController.isPresent')
+
+    Route.resource('ticket', 'TicketsController').apiOnly().middleware({})
+    Route.get('ticket/is-present/:id', 'TicketsController.isPresent')
   })
-    .middleware("auth:api")
+    //.middleware("auth:api")
 
 
 
