@@ -26,11 +26,45 @@ Route.get('/', async () => {
 
 
 Route.group(() => {
-  Route.resource('user', 'UsersController').apiOnly().middleware({})
-  Route.resource('discord', 'DiscordsController').apiOnly().middleware({})
-  Route.resource('minecraft', 'MinecraftsController').apiOnly().middleware({})
 
 
-  Route.post('/discord/compute-if-absent/:id', 'DiscordsController.computeIfAbsent')
-  Route.post('/user/compute-if-absent/:id', 'UsersController.computeIfAbsent')
+  Route.get('/authentication/user/me', 'AuthController.user').middleware('auth')
+
+  Route.post('/authentication/api/login', 'AuthController.loginApi')
+  Route.post('/authentication/api/logout', 'AuthController.logoutApi').middleware('auth')
+
+
+  Route.group(() => {
+
+    // Route pour le model Minecraft
+    Route.resource('minecraft', 'MinecraftsController').apiOnly().middleware({})
+    Route.get('/minecraft/is-present/:id', 'MinecraftsController.isPresent')
+
+    // Route pour le model User
+    Route.resource('user', 'UsersController').apiOnly().middleware({})
+    Route.get('/user/is-present/:id', 'UsersController.isPresent')
+
+    // Route pour le model Discord
+    Route.resource('discord', 'DiscordsController').apiOnly().middleware({})
+    Route.get('/discord/is-present/:id', 'DiscordsController.isPresent')
+
+    // Route pour le model Ticket
+    Route.resource('ticket', 'TicketsController').apiOnly().middleware({})
+    Route.get('ticket/is-present/:id', 'TicketsController.isPresent')
+
+    
+
+    // Route pour le model Role
+    Route.resource('role', 'RolesController').apiOnly().middleware({})
+    Route.get('role/is-present/:id', 'RolesController.isPresent')
+
+    // Route pour le model Permission
+    Route.resource('permission', 'PermissionsController').apiOnly().middleware({})
+    Route.get('permission/is-present/:id', 'PermissionsController.isPresent')
+
+    Route.group(() => {
+      Route.resource('', 'ShopsController').apiOnly().middleware({})
+    }).prefix('shop')
+  })
+    //.middleware("auth:api")
 }).prefix('api')

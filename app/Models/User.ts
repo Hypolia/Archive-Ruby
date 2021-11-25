@@ -1,20 +1,22 @@
 import { DateTime } from 'luxon'
-import {BaseModel, beforeCreate, column, ManyToMany, manyToMany} from '@ioc:Adonis/Lucid/Orm'
-import Role from "App/Models/Role";
-import Permission from "App/Models/Permission";
+import {
+  BaseModel,
+  beforeCreate, beforeSave,
+  BelongsTo,
+  column,
+  HasOne,
+  hasOne
+} from '@ioc:Adonis/Lucid/Orm'
 import Generate from "../../utils/GenerateUUID";
-import Discord from "App/Models/discord/Discord";
-import Minecraft from "App/Models/minecraft/Minecraft";
+import Hash from '@ioc:Adonis/Core/Hash'
+import Discord from './Discord';
 
-/*
-|--------------------------------------------------------------------------
-| User Model
-|--------------------------------------------------------------------------
-|
-| Le model User représente le compte principal que l'utilisateur
-| pourra créer via le SiteWeb
-|
-| Author: @NathaelB
+/**
+ * Hypolia Inc | API Rest Source Code.
+ * User Model
+ *
+ * @license GPLv3
+ * @copyright NathaelB
  */
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -25,10 +27,9 @@ export default class User extends BaseModel {
     model.id = Generate.generateUUID()
   }
 
-  /**
-   * Username Minecraft:
-   * - MrNathael
-   */
+  @column()
+  public uuid: string
+
   @column()
   public username: string
 
@@ -39,36 +40,33 @@ export default class User extends BaseModel {
   public password: string
 
   @column()
-  public avatar: string
+  public credit: number
 
   @column()
-  public credits: number
-
-  @column()
-  public votes: number
+  public coins: number
 
   @column()
   public banned: boolean
 
   @column()
-  public rememberMeToken: string
+  public minecraftId: string
 
-  @manyToMany(() => Role)
-  public roles: ManyToMany<typeof Role>
+  @hasOne(() => Discord)
+  public discord: HasOne<typeof Discord>
 
-  @manyToMany(() => Permission)
-  public permissions: ManyToMany<typeof Permission>
-
-  @manyToMany(() => Discord)
-  public discord: ManyToMany<typeof  Discord>
-
-  @manyToMany(() => Minecraft)
-  public minecraft: ManyToMany<typeof Minecraft>
+  
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @beforeSave()
+  public static async hashPassword(user: User) {
+    if (user.$dirty.password) {
+      user.password = await Hash.make(user.password)
+    }
+  }
 
 }

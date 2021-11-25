@@ -1,137 +1,73 @@
 // import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-import Minecraft from "App/Models/minecraft/Minecraft";
-import {HttpContextContract} from "@ioc:Adonis/Core/HttpContext";
-import StoreValidator from "App/Validators/minecraft/account/StoreValidator";
-import UpdateValidator from "App/Validators/minecraft/account/UpdateValidator";
-import Job from "App/Models/minecraft/data/Job";
+import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext"
+import Minecraft from "App/Models/Minecraft"
+import StoreValidator from "App/Validators/minecraft/StoreValidator"
+import UpdateValidator from "App/Validators/minecraft/UpdateValidator"
 
-/*
-|--------------------------------------------------------------------------
-| Minecrafts Controller
-|--------------------------------------------------------------------------
-|
-| Author: @NathaelB
-|--------------------------------------------------------------------------
- */
 export default class MinecraftsController {
 
-  /*
-  |--------------------------------------------------------------------------
-  | Method index | GET
-  |--------------------------------------------------------------------------
-  | Récupère tout les objets présent dans la table 'minecraft'
-  | en les triant par ordre décroissant de leurs permission_level
-  | de leurs rôles:
-  | relation: jobs & roles
-  |--------------------------------------------------------------------------
-   */
-  public async index() {
-    console.log('test')
-    return Minecraft.query().preload('jobs').preload('roles', (role) => {
-      role.orderBy('permission_level', 'desc')
-    })
-  }
-
-  /*
-  |--------------------------------------------------------------------------
-  | Method show | GET
-  |--------------------------------------------------------------------------
-  | Récupère un objet sous un JSON de la table 'minecraft'
-  | sous un paramètre 'uuid'
-  |--------------------------------------------------------------------------
-   */
-  public async show({ params }: HttpContextContract) {
-    return await Minecraft.findBy('uuid', params.id)
-  }
-
-  /*
-  |--------------------------------------------------------------------------
-  | Method isPresent | GET
-  |--------------------------------------------------------------------------
-  | Récupère un boolean, selon si l'objet recherché
-  | est bien présent dans la table 'minecraft'
-  |--------------------------------------------------------------------------
-   */
-  public async isPresent({ params }: HttpContextContract) {
-    const user = await Minecraft.findBy('uuid', params.id)
-    return !!user
-  }
-
-  /*
-  |--------------------------------------------------------------------------
-  | Method store | POST
-  |--------------------------------------------------------------------------
-  | Envoie une requête via le StoreValidator pour créer un
-  | objet Minecraft dans la table 'minecraft' avec plusieurs paramètres
-  |--------------------------------------------------------------------------
-   */
-  public async store({ request }: HttpContextContract) {
-    const data = await request.validate(StoreValidator)
-    const user = await Minecraft.create(data)
-    const job = await Job.create({
-      "alchimiste_exp": 0,
-      "combat_exp": 0,
-      "foraging_exp": 0,
-      "mineur_exp": 0,
-      "farmeur_exp": 0,
-      "enchanteur_exp": 0,
-      "fishing_exp": 0,
-
-      "alchimiste_level": 1,
-      "combat_level": 1,
-      "foraging_level": 1,
-      "mineur_level": 1,
-      "farmeur_level": 1,
-      "enchanteur_level": 1,
-      "fishing_level": 1
-    })
-    await user!.related('jobs').attach([job.id])
-  }
-
-  /*
-  |--------------------------------------------------------------------------
-  | Method computeIfAbsent | POST
-  |--------------------------------------------------------------------------
-  | Envoie une requête via le StoreValidator pour créer un
-  | objet Minecraft dans la table 'minecraft' avec plusieurs paramètres.
-  | Vérifie si l'objet est déjà créer, si oui il ne fait rien.
-  |--------------------------------------------------------------------------
-   */
-  public async computeIfAbsent({ params, request }: HttpContextContract) {
-    const user = await Minecraft.findBy('uuid', params.id)
-    if (!user) {
-      const data = await request.validate(StoreValidator)
-      return await Minecraft.create(data)
+    public async index () {
+        return Minecraft.query()
+        .preload('user', (query) => query.preload('discord'))
+        .preload('jobs')
+        .preload('stats')
+        .preload('roles', (query) => query.preload('permissions'))
+        .preload('permissions')
     }
-  }
 
-  /*
-  |--------------------------------------------------------------------------
-  | Method update | PUT
-  |--------------------------------------------------------------------------
-  | Permet de mettre à jour un utilisateur selon un ou plusieurs
-  | paramètres.
-  |--------------------------------------------------------------------------
-   */
-  public async update({ request, params, response }: HttpContextContract) {
-    const user = await Minecraft.findBy('uuid', params.id)
-    const data = await request.validate(UpdateValidator)
+    public async show ({ params }: HttpContextContract) {
+        return Minecraft.query()
+        .where('uuid', params.id)
+        .preload('user', (query) => query.preload('discord'))
+        .preload('jobs')
+        .preload('stats')
+        .preload('roles', (query) => query.preload('permissions'))
+        .preload('permissions')
+    }
 
-    await user?.merge(data).save()
-    return response.ok("Le compte a été mis à jour")
-  }
+    public async isPresent ({ params }: HttpContextContract) {
+        const minecraft = await Minecraft.findBy('uuid', params.id)
+        return !!minecraft
+    }
 
-  /*
-  |--------------------------------------------------------------------------
-  | Method destroy | DESTROY
-  |--------------------------------------------------------------------------
-  | Supprime un objet dans la table 'minecraft'
-   */
-  public async destroy({ params, response}: HttpContextContract) {
-    const user = await Minecraft.findBy('uuid', params.id)
-    await user?.delete()
+    public async store ({ request }: HttpContextContract) {
+        const data = await request.validate(StoreValidator)
+        const minecraft = await Minecraft.create(data)
+        await minecraft?.related('jobs').create({
+            "minecraftId": minecraft.id,
+        })
+        await minecraft.related('stats').create({
+            "minecraftId": minecraft.id,
+        })
 
-    return response.ok("Le compte a été supprimé")
-  }
+        return { minecraft }
+    }
+
+    public async update ({ request, params }: HttpContextContract) {
+        const minecraft = await Minecraft.findBy('uuid', params.id)
+        const data = await request.validate(UpdateValidator)
+        await minecraft?.merge(data).save()
+
+        if (data.permissions) {
+            await minecraft?.related('permissions').sync(data.permissions)
+        }
+        if (data.roles) {
+            await minecraft?.related('roles').sync(data.roles)
+        }
+        if (data.user) {
+            await minecraft?.related('user').create({
+                minecraftId: minecraft.id,
+                password: data.user.password,
+                email: data.user.email,
+                username: data.user.username
+            })
+        }
+
+        return { minecraft }
+    }
+
+    public async destroy () {
+
+    }
 }

@@ -1,4 +1,4 @@
-import { schema } from '@ioc:Adonis/Core/Validator'
+import { rules, schema } from '@ioc:Adonis/Core/Validator'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class StoreValidator {
@@ -25,6 +25,8 @@ export default class StoreValidator {
 	 *    ```
 	 */
   public schema = schema.create({
+    user_id: schema.string({trim: true}, [rules.unique({table: 'tickets', column: 'user_id'})]),
+    ticket_id: schema.string({trim: true}, [rules.unique({table: 'tickets', column: 'ticket_id'})])
   })
 
 	/**

@@ -11,8 +11,8 @@ import { AuthenticationException } from '@adonisjs/auth/build/standalone'
  */
 export default class AuthMiddleware {
   /**
-  * The URL to redirect to when request is Unauthorized
-  */
+   * The URL to redirect to when request is Unauthorized
+   */
   protected redirectTo = '/login'
 
   /**
@@ -31,11 +31,10 @@ export default class AuthMiddleware {
      * driver
      */
     let guardLastAttempted: string | undefined
-
     for (let guard of guards) {
       guardLastAttempted = guard
-
       if (await auth.use(guard).check()) {
+
         /**
          * Instruct auth to use the given guard as the default guard for
          * the rest of the request, since the user authenticated
@@ -50,7 +49,7 @@ export default class AuthMiddleware {
      * Unable to authenticate using any guard
      */
     throw new AuthenticationException(
-      'Unauthorized access',
+      'Autorisation Refusée',
       'E_UNAUTHORIZED_ACCESS',
       guardLastAttempted,
       this.redirectTo,

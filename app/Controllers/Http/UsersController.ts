@@ -3,12 +3,12 @@ import {HttpContextContract} from "@ioc:Adonis/Core/HttpContext";
 import StoreValidator from "App/Validators/users/StoreValidator";
 import UpdateValidator from "App/Validators/users/UpdateValidator";
 
-/*
-|--------------------------------------------------------------------------
-| Users Controller
-|--------------------------------------------------------------------------
-|
-| Author: @NathaelB
+/**
+ * Hypolia Inc | API Rest Source Code.
+ * UsersController
+ *
+ * @license GPLv3
+ * @copyright NathaelB
  */
 export default class UsersController {
 
@@ -21,9 +21,11 @@ export default class UsersController {
   | de leurs rôles
    */
   public async index() {
-    return User.query().preload('roles', (role) => {
+    /*return User.query().preload('roles', (role) => {
       role.orderBy('permission_level', 'desc')
-    })
+    })*/
+    return User.query()
+      .preload('discord')
   }
 
   /*
@@ -34,7 +36,11 @@ export default class UsersController {
   | sous un paramètre 'username'
    */
   public async show({ params }: HttpContextContract) {
-    return User.findBy('username', params.id)
+    return User.query()
+      .where('username', params.id)
+      .preload('discord')
+
+    //return User.findBy('username', params.id)
     /*return User.query().where('id', params.id).preload('roles', (role) => {
       role.orderBy('permission_level', 'desc')
     })*/
@@ -59,26 +65,16 @@ export default class UsersController {
   | Envoie une requête via le StoreValidator pour créer un
   | objet User dans la table 'user' avec plusieurs paramètres
    */
-  public async store({ request }: HttpContextContract) {
-    const data = await request.validate(StoreValidator)
-
-    return await User.create(data)
-  }
-
-  /*
-  |--------------------------------------------------------------------------
-  | Method computeIfAbsent | POST
-  |--------------------------------------------------------------------------
-  | Envoie une requête via le StoreValidator pour créer un
-  | objet User dans la table 'user' avec plusieurs paramètres.
-  | Vérifie si l'objet est déjà créer, si oui il ne fait rien.
-   */
-  public async computeIfAbsent({ params, request }: HttpContextContract) {
-    const user = await User.findBy('uuid', params.id)
+  public async store({ request, response }: HttpContextContract) {
+    const user = await User.findBy('id', request.body().email)
     if (!user) {
       const data = await request.validate(StoreValidator)
-      return await User.create(data)
+      const userCreate = await User.create(data)
+      const verifUser = await User.findBy('email', userCreate.email)
+      return { verifUser }
+      //return response.ok("[Success]: Le compte a été créé")
     }
+    return response.ok("[Error]: Le compte est déjà existant")
   }
 
   /*
@@ -89,13 +85,20 @@ export default class UsersController {
   | paramètres
    */
   public async update({ request, params, response }: HttpContextContract) {
-    const user = await User.find(params.id)
+    const user = await User.findBy('email', params.id)
     const data = await request.validate(UpdateValidator)
-
     await user?.merge(data).save()
-    if (data.roles) {
-      await user?.related('roles').sync(data.roles)
+    if (data.discord) {
+      await user?.related('discord').create({
+        userId: user.id,
+        level: 1,
+        exp: 0,
+        discordId: data.discord.discordId,
+        username: data.discord.username,
+      })
     }
+ 
+
     return response.ok("Le compte a été mis à jour")
   }
 
@@ -111,4 +114,5 @@ export default class UsersController {
 
     return response.ok("Le compte a été supprimé")
   }
+
 }

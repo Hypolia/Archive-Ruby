@@ -12,7 +12,7 @@ declare module '@ioc:Adonis/Core/Event' {
   |--------------------------------------------------------------------------
   |
   | You can define types for events inside the following interface and
-  | AdonisJS will make sure that all listeners and emit calls adheres
+  | AdonisJS will make sure that all events and emit calls adheres
   | to the defined types.
   |
   | For example:
