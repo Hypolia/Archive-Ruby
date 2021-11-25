@@ -1,16 +1,15 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
-export default class PermissionUsers extends BaseSchema {
-  protected tableName = 'permission_user'
+export default class MinecraftPermission extends BaseSchema {
+  protected tableName = 'minecraft_permission'
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.string('user_id').references('id').inTable('users').onDelete('CASCADE')
+      table.string('minecraft_id').references('id').inTable('minecrafts')
       table.string('permission_id').references('id').inTable('permissions')
-      table.unique(['permission_id', 'user_id'])
 
-      table.timestamps(true, true)
+      table.unique(['minecraft_id', 'permission_id'])
     })
   }
 

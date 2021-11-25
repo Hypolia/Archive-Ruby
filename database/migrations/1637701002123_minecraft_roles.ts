@@ -1,17 +1,17 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
-export default class RoleUsers extends BaseSchema {
-  protected tableName = 'role_user'
+export default class MinecraftRole extends BaseSchema {
+  protected tableName = 'minecraft_role'
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.string('user_id').references('id').inTable('users').onDelete('CASCADE')
+      table.string('minecraft_id').references('id').inTable('minecrafts')
       table.string('role_id').references('id').inTable('roles')
-      table.unique(['role_id', 'user_id'])
+
+      table.unique(['minecraft_id', 'role_id'])
 
       table.timestamps(true, true)
-
     })
   }
 

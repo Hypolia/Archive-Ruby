@@ -28,7 +28,7 @@ export default class Jobs extends BaseSchema {
       table.double('alchimiste_level').notNullable()
       table.double('alchimiste_exp').notNullable()
 
-      table.string('user_id').references('id').inTable('users').onDelete('CASCADE')
+      table.string('minecraft_id').references('id').inTable('minecrafts').onDelete('CASCADE')
 
       table.timestamps(true, true)
       //table.timestamp('created_at', { useTz: true })

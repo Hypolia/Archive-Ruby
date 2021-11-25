@@ -20,7 +20,7 @@ export default class Stats extends BaseSchema {
       table.integer('combat_fortune').notNullable()
 
 
-      table.string('user_id').references('id').inTable('users').onDelete('CASCADE')
+      table.string('minecraft_id').references('id').inTable('minecrafts').onDelete('CASCADE')
 
       table.timestamps(true, true)
       //table.timestamp('created_at', { useTz: true })

@@ -14,13 +14,14 @@ export default class Users extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.string('id', 60).primary()
-      table.string('uuid').notNullable().unique()
       table.string('username').notNullable().unique()
       table.string('email').notNullable().unique()
       table.string('password').notNullable()
       table.integer('credit')
-      table.double('coins')
+
       table.boolean('banned')
+
+      table.string('minecraft_id').unique()
 
       table.timestamps(true, true)
       //table.timestamp('created_at', { useTz: true })
