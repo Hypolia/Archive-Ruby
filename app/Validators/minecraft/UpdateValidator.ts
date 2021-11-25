@@ -31,6 +31,11 @@ export default class UpdateValidator {
     duration: schema.number.optional(),
     roles: schema.array.optional().members(schema.string({trim: true}, [rules.exists({column: 'id', table: 'roles'})])),
     permissions: schema.array.optional().members(schema.string()),
+    user: schema.object.optional().members({
+      username: schema.string.optional({trim: true}),
+      email: schema.string.optional({ trim: true }, [rules.email(), rules.unique({ table: 'users', column: 'email' })]),
+      password: schema.string.optional({ trim: true }, [rules.confirmed()]),
+    })
   })
 
   /**

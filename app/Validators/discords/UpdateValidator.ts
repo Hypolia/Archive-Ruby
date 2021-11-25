@@ -25,6 +25,9 @@ export default class UpdateValidator {
 	 *    ```
 	 */
   public schema = schema.create({
+	  username: schema.string.optional({ trim: true}),
+	  level: schema.number.optional(),
+	  exp: schema.number.optional(),
   })
 
 	/**
