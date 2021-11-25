@@ -2,10 +2,14 @@ import { DateTime } from 'luxon'
 import {
   BaseModel,
   beforeCreate, beforeSave,
-  column
+  BelongsTo,
+  column,
+  HasOne,
+  hasOne
 } from '@ioc:Adonis/Lucid/Orm'
 import Generate from "../../utils/GenerateUUID";
 import Hash from '@ioc:Adonis/Core/Hash'
+import Discord from './Discord';
 
 /**
  * Hypolia Inc | API Rest Source Code.
@@ -47,8 +51,10 @@ export default class User extends BaseModel {
   @column()
   public minecraftId: string
 
-  
+  @hasOne(() => Discord)
+  public discord: HasOne<typeof Discord>
 
+  
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

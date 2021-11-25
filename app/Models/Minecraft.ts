@@ -1,11 +1,12 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeCreate, column, hasMany, HasOne, hasOne, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, beforeCreate, BelongsTo, belongsTo, column, hasMany, HasOne, hasOne, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
 import Generate from "../../utils/GenerateUUID";
 import User from './User'
 import Job from './Job'
 import Stat from './Stat'
 import Permission from './Permission'
 import Role from './Role'
+import Discord from './Discord';
 
 
 export default class Minecraft extends BaseModel {
@@ -44,6 +45,7 @@ export default class Minecraft extends BaseModel {
 
   @manyToMany(() => Role)
   public roles: ManyToMany<typeof Role>
+
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
