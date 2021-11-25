@@ -1,7 +1,6 @@
 import { DateTime } from 'luxon'
-import {BaseModel, beforeCreate, column, HasOne, hasOne} from '@ioc:Adonis/Lucid/Orm'
+import {BaseModel, beforeCreate, column} from '@ioc:Adonis/Lucid/Orm'
 import Generate from "../../utils/GenerateUUID";
-import User from "App/Models/User";
 
 export default class Stat extends BaseModel {
   @column({ isPrimary: true })
@@ -13,7 +12,7 @@ export default class Stat extends BaseModel {
   }
 
   @column()
-  public userId: string
+  public minecraftId: string
 
   @column()
   public health: number
@@ -45,8 +44,7 @@ export default class Stat extends BaseModel {
   @column()
   public combatFortune: number
 
-  @hasOne(() => User)
-  public user: HasOne<typeof User>
+
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

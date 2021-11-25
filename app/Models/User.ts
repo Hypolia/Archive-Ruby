@@ -2,13 +2,9 @@ import { DateTime } from 'luxon'
 import {
   BaseModel,
   beforeCreate, beforeSave,
-  column, HasOne, hasOne, ManyToMany, manyToMany
+  column
 } from '@ioc:Adonis/Lucid/Orm'
 import Generate from "../../utils/GenerateUUID";
-import Job from "App/Models/Job";
-import Stat from "App/Models/Stat";
-import Permission from "App/Models/Permission";
-import Role from "App/Models/Role";
 import Hash from '@ioc:Adonis/Core/Hash'
 
 /**
@@ -48,17 +44,11 @@ export default class User extends BaseModel {
   @column()
   public banned: boolean
 
-  @hasOne(() => Job)
-  public jobs: HasOne<typeof Job>
+  @column()
+  public minecraftId: string
 
-  @hasOne(() => Stat)
-  public stats: HasOne<typeof Stat>
+  
 
-  @manyToMany(() => Permission)
-  public permissions: ManyToMany<typeof Permission>
-
-  @manyToMany(() => Role)
-  public roles: ManyToMany<typeof Role>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
