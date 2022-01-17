@@ -20,25 +20,26 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/', async () => {
-  return { hello: 'world' }
+Route.get('/', async ({ view }) => {
+  return view.render('home')
 })
 
 
 Route.group(() => {
-
 
   Route.get('/authentication/user/me', 'AuthController.user').middleware('auth')
 
   Route.post('/authentication/api/login', 'AuthController.loginApi')
   Route.post('/authentication/api/logout', 'AuthController.logoutApi').middleware('auth')
 
-
   Route.group(() => {
 
     // Route pour le model Minecraft
     Route.resource('minecraft', 'MinecraftsController').apiOnly().middleware({})
     Route.get('/minecraft/is-present/:id', 'MinecraftsController.isPresent')
+
+    // Route pour Arkhane
+    Route.resource('arkhane', 'ArkhanesController').apiOnly().middleware({})
 
     // Route pour le model User
     Route.resource('user', 'UsersController').apiOnly().middleware({})
@@ -52,7 +53,7 @@ Route.group(() => {
     Route.resource('ticket', 'TicketsController').apiOnly().middleware({})
     Route.get('ticket/is-present/:id', 'TicketsController.isPresent')
 
-    
+
 
     // Route pour le model Role
     Route.resource('role', 'RolesController').apiOnly().middleware({})
