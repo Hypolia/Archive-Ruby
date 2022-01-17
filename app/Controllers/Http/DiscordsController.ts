@@ -8,15 +8,16 @@ import UpdateValidator from "App/Validators/discords/UpdateValidator";
 export default class DiscordsController {
 
   public async index() {
-    return Discord.all()
+    return Discord.query()
+    .preload('ticket')
   }
 
   public async show({ params }: HttpContextContract) {
-    return Discord.findBy('discord_id', params.id)
+    return Discord.findBy('member_id', params.id)
   }
 
   public async isPresent({ params }: HttpContextContract) {
-    const user = await Discord.findBy('discord_id', params.id)
+    const user = await Discord.findBy('member_id', params.id)
     return !!user
   }
 
@@ -27,9 +28,16 @@ export default class DiscordsController {
   }
 
   public async update({ request, params }: HttpContextContract) {
-    const user = await Discord.findBy('discord_id', params.id)
+    const user = await Discord.findBy('member_id', params.id)
     const data = await request.validate(UpdateValidator)
-    return user?.merge(data).save()
+    await user?.merge(data).save()
+    if (data.ticket) {
+      await user?.related('ticket').create({
+        discordId: user.id,
+        ticketId: data.ticket.ticketId,
+        userId: user.memberId
+      })
+    }
 
     return { user }
   }
