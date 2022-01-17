@@ -3,14 +3,16 @@ import { BaseModel, beforeCreate, column, hasMany, HasMany } from '@ioc:Adonis/L
 import Generate from '../../../utils/GenerateUUID'
 import Offer from './Offer'
 
-export default class Category extends BaseModel {
+export default class Categorie extends BaseModel {
+  public static table = 'shop_categories'
+
   @column({ isPrimary: true })
   public id: string
 
   @column()
   public name: string
 
-  @hasMany(() => Offer, { foreignKey: 'categoryId'})
+  @hasMany(() => Offer, { foreignKey: 'categorieId'})
   public offers: HasMany<typeof Offer>
 
   @column.dateTime({ autoCreate: true })
