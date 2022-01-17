@@ -37,9 +37,9 @@ export default class UpdateValidator {
     permissions: schema.array.optional().members(schema.string()),
     discord: schema.object.optional().members({
 		username: schema.string.optional(),
-		discordId: schema.string.optional({ trim: true}, [rules.unique({
+		memberId: schema.string.optional({ trim: true}, [rules.unique({
 			table: 'discords',
-			column: 'discord_id'
+			column: 'member_id'
 		})]),
 	})
   })

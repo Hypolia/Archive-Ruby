@@ -1,4 +1,4 @@
-import { schema } from '@ioc:Adonis/Core/Validator'
+import { rules, schema } from '@ioc:Adonis/Core/Validator'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class UpdateValidator {
@@ -28,6 +28,13 @@ export default class UpdateValidator {
 	  username: schema.string.optional({ trim: true}),
 	  level: schema.number.optional(),
 	  exp: schema.number.optional(),
+
+	  ticket: schema.object.optional().members({
+		  ticketId: schema.string.optional({trim: true}, [rules.unique({
+			  table: 'tickets',
+			  column: 'ticket_id'
+		  })])
+	  })
   })
 
 	/**

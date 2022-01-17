@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
-import {BaseModel, beforeCreate, column} from '@ioc:Adonis/Lucid/Orm'
+import {BaseModel, beforeCreate, column, HasOne, hasOne} from '@ioc:Adonis/Lucid/Orm'
 import Generate from "../../utils/GenerateUUID";
+import Ticket from './Ticket';
 
 export default class Discord extends BaseModel {
   @column({ isPrimary: true })
@@ -15,7 +16,7 @@ export default class Discord extends BaseModel {
   public userId: string
 
   @column()
-  public discordId: string
+  public memberId: string
 
   @column()
   public username: string
@@ -28,6 +29,9 @@ export default class Discord extends BaseModel {
 
   @column()
   public langage: string
+
+  @hasOne(() => Ticket)
+  public ticket: HasOne<typeof Ticket>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
