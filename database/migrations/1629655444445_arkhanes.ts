@@ -1,15 +1,12 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
-export default class Tickets extends BaseSchema {
-  protected tableName = 'tickets'
+export default class Arkhanes extends BaseSchema {
+  protected tableName = 'arkhanes'
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.string('id').primary()
-      table.string('discord_id').unique()
-      table.string('user_id').unique()
-      table.string('ticket_id').unique()
-
+      table.string('minecraft_id').unique().notNullable()
       table.timestamps(true, true)
     })
   }

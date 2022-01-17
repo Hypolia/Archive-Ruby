@@ -7,7 +7,7 @@ export default class Discords extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.string('id').primary()
       table.string('user_id').unique()
-      table.string('discord_id').notNullable().unique()
+      table.string('member_id').notNullable().unique()
       table.string('username').notNullable()
       table.integer('level').notNullable()
       table.integer('exp').notNullable()
