@@ -12,7 +12,7 @@ export default class Stat extends BaseModel {
   }
 
   @column()
-  public minecraftId: string
+  public arkhaneId: string
 
   @column()
   public health: number

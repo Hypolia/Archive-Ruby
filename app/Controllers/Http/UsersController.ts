@@ -38,7 +38,7 @@ export default class UsersController {
   public async show({ params }: HttpContextContract) {
     return User.query()
       .where('username', params.id)
-      .preload('discord')
+      .preload('discord').first()
 
     //return User.findBy('username', params.id)
     /*return User.query().where('id', params.id).preload('roles', (role) => {
@@ -93,11 +93,11 @@ export default class UsersController {
         userId: user.id,
         level: 1,
         exp: 0,
-        discordId: data.discord.discordId,
+        memberId: data.discord.memberId,
         username: data.discord.username,
       })
     }
- 
+
 
     return response.ok("Le compte a été mis à jour")
   }
