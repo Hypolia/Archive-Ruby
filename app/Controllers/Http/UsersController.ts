@@ -65,16 +65,10 @@ export default class UsersController {
   | Envoie une requête via le StoreValidator pour créer un
   | objet User dans la table 'user' avec plusieurs paramètres
    */
-  public async store({ request, response }: HttpContextContract) {
-    const user = await User.findBy('id', request.body().email)
-    if (!user) {
-      const data = await request.validate(StoreValidator)
-      const userCreate = await User.create(data)
-      const verifUser = await User.findBy('email', userCreate.email)
-      return { verifUser }
-      //return response.ok("[Success]: Le compte a été créé")
-    }
-    return response.ok("[Error]: Le compte est déjà existant")
+  public async store({ request }: HttpContextContract) {
+    const data = await request.validate(StoreValidator)
+    const userCreate = await User.create(data)
+    return { userCreate }
   }
 
   /*
@@ -84,7 +78,7 @@ export default class UsersController {
   | Permet de mettre à jour un utilisateur selon un ou plusieurs
   | paramètres
    */
-  public async update({ request, params, response }: HttpContextContract) {
+  public async update({ request, params }: HttpContextContract) {
     const user = await User.findBy('email', params.id)
     const data = await request.validate(UpdateValidator)
     await user?.merge(data).save()
@@ -94,12 +88,11 @@ export default class UsersController {
         level: 1,
         exp: 0,
         memberId: data.discord.memberId,
-        username: data.discord.username,
       })
     }
 
 
-    return response.ok("Le compte a été mis à jour")
+    return { user }
   }
 
   /*
