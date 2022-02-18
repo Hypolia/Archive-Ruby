@@ -33,13 +33,16 @@ export default class UpdateValidator {
     banned: schema.boolean.optional(),
     linked: schema.boolean.optional(),
 
+    minecraft_id: schema.string({ trim: true}, [rules.unique({
+      table: 'users',
+      column: 'minecraft_id'
+    })]),
     roles: schema.array.optional().members(schema.string({trim: true}, [rules.exists({column: 'id', table: 'roles'})])),
     permissions: schema.array.optional().members(schema.string()),
     discord: schema.object.optional().members({
-		username: schema.string.optional(),
-		discordId: schema.string.optional({ trim: true}, [rules.unique({
+		memberId: schema.string.optional({ trim: true}, [rules.unique({
 			table: 'discords',
-			column: 'discord_id'
+			column: 'member_id'
 		})]),
 	})
   })

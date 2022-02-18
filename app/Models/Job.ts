@@ -13,7 +13,7 @@ export default class Job extends BaseModel {
   }
 
   @column()
-  public minecraftId: string
+  public arkhaneId: string
 
   /*
   Mineur Job

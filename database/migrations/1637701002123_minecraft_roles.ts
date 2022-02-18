@@ -6,8 +6,8 @@ export default class MinecraftRole extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.string('minecraft_id').references('id').inTable('minecrafts')
-      table.string('role_id').references('id').inTable('roles')
+      table.string('minecraft_id').references('id').inTable('minecrafts').onDelete('CASCADE')
+      table.string('role_id').references('id').inTable('roles').onDelete('CASCADE')
 
       table.unique(['minecraft_id', 'role_id'])
 

@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 import { BaseModel, beforeCreate, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import Generate from '../../../utils/GenerateUUID'
-import Category from './Category'
+import Category from './Categorie'
 
 export default class Offer extends BaseModel {
   @column({ isPrimary: true })
@@ -34,7 +34,7 @@ export default class Offer extends BaseModel {
   @column()
   public commands: string
 
-  @belongsTo(() => Category, {localKey: 'categoryId'})
+  @belongsTo(() => Category, {localKey: 'categorieId'})
   public category: BelongsTo<typeof Category>
 
   @column.dateTime({ autoCreate: true })

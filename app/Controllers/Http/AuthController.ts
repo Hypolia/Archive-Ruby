@@ -19,19 +19,19 @@ export default class AuthController {
       })
       return  { token: token.toJSON() }
     } catch (error) {
-      return response.badRequest('Identifiants Incorrectes')
+      return response.badRequest("Identifiants Incorrectes", true)
     }
   }
 
-  public async logoutApi({ auth, response }: HttpContextContract) {
+  public async logoutApi({ auth, response }: HttpContextContract): Promise<void> {
       await auth.use('api').logout()
       return response.ok('Vous avez été déconnecté')
   }
 
-  public async user({ auth }: HttpContextContract) {
+  public async user({ auth }: HttpContextContract): Promise<{user: User | null}> {
       const user = await User.query()
         .where('id', auth.user!.id)
-        .preload('roles')
+        .preload('discord')
         .first()
       return { user }
   }

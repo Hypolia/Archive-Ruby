@@ -25,7 +25,7 @@ export default class StoreValidator {
 	 *    ```
 	 */
   public schema = schema.create({
-    discord_id: schema.string({trim: true}, [rules.unique({table: 'discords', column: 'discord_id'})]),
+    member_id: schema.string({trim: true}, [rules.unique({table: 'discords', column: 'member_id'})]),
     username: schema.string({trim: true}),
 	level: schema.number(),
     exp: schema.number(),

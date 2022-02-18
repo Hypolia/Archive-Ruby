@@ -1,5 +1,5 @@
 import CacheService from 'App/Services/CacheService'
-import Category from 'App/Models/Shop/Category'
+import Category from 'App/Models/shop/Categorie'
 import {HttpContextContract} from '@ioc:Adonis/Core/HttpContext'
 import Offer from 'App/Models/Shop/Offer'
 import {DateTime} from 'luxon'
@@ -11,10 +11,12 @@ import PromotionalCode from 'App/Models/PromotionalCode'
 export default class ShopsController {
   public async index () {
     return await CacheService.remember('shop-index', async () => {
-      return await Category.query().select('id', 'name').preload('offers', (builder) => {
-        builder.select('id', 'name', 'image', 'price', 'unique', 'version', 'deps', 'description')
-      })
+      return await Category.query().select('id', 'name')
+      //   .preload('offers', (builder) => {
+      //   builder.select('id', 'name', 'image', 'price', 'unique', 'version', 'deps', 'description')
+      // })
     }, '1h')
+
   }
 
   public async buy ({ params, response, auth, session }: HttpContextContract) {

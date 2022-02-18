@@ -2,7 +2,6 @@ import { DateTime } from 'luxon'
 import {
   BaseModel,
   beforeCreate, beforeSave,
-  BelongsTo,
   column,
   HasOne,
   hasOne
@@ -54,7 +53,8 @@ export default class User extends BaseModel {
   @hasOne(() => Discord)
   public discord: HasOne<typeof Discord>
 
-  
+
+
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

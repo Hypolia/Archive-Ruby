@@ -7,39 +7,52 @@ import UpdateValidator from "App/Validators/minecraft/UpdateValidator"
 
 export default class MinecraftsController {
 
-    public async index () {
+    public async index (): Promise<Minecraft[]> {
+        /*await Mail.send((message => {
+          message
+            .from("contact@hypolia.fr")
+            .to("pro.nathaelbonnal@gmail.com")
+            .subject("Welcome To The News EMAIL!")
+            .htmlView('emails/welcome', {
+              user: { fullName: "Nathael Bonnal"},
+              url: 'https://hypolia.fr'
+            })
+        }))*/
         return Minecraft.query()
-        .preload('user', (query) => query.preload('discord'))
-        .preload('jobs')
-        .preload('stats')
-        .preload('roles', (query) => query.preload('permissions'))
+        .preload('user', (query) =>
+            query.preload('discord', (query) => query.preload('ticket')))
+        .preload('arkhane')
+        .preload('roles', (query) =>
+          query.preload('permissions'))
         .preload('permissions')
     }
 
-    public async show ({ params }: HttpContextContract) {
+    public async show ({ params }: HttpContextContract): Promise<Minecraft | null> {
         return Minecraft.query()
         .where('uuid', params.id)
-        .preload('user', (query) => query.preload('discord'))
-        .preload('jobs')
-        .preload('stats')
+        .preload('user', (query) =>
+            query.preload('discord', (query) => query.preload('ticket')))
+        .preload('arkhane', (query) => query.preload('stat'))
+
         .preload('roles', (query) => query.preload('permissions'))
-        .preload('permissions')
+        .preload('permissions').first()
     }
 
-    public async isPresent ({ params }: HttpContextContract) {
+    public async isPresent ({ params }: HttpContextContract): Promise<boolean> {
         const minecraft = await Minecraft.findBy('uuid', params.id)
         return !!minecraft
     }
 
-    public async store ({ request }: HttpContextContract) {
+    public async store ({ request }: HttpContextContract): Promise<{minecraft: Minecraft}> {
+        console.log(request)
         const data = await request.validate(StoreValidator)
         const minecraft = await Minecraft.create(data)
-        await minecraft?.related('jobs').create({
+        /*await minecraft?.related('jobs').create({
             "minecraftId": minecraft.id,
         })
         await minecraft.related('stats').create({
             "minecraftId": minecraft.id,
-        })
+        })*/
 
         return { minecraft }
     }

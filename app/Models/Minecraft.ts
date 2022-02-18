@@ -1,12 +1,11 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeCreate, BelongsTo, belongsTo, column, hasMany, HasOne, hasOne, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, beforeCreate, column, HasOne, hasOne, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
 import Generate from "../../utils/GenerateUUID";
 import User from './User'
-import Job from './Job'
-import Stat from './Stat'
 import Permission from './Permission'
 import Role from './Role'
-import Discord from './Discord';
+import Arkhane from 'App/Models/Arkhane'
+
 
 
 export default class Minecraft extends BaseModel {
@@ -34,11 +33,8 @@ export default class Minecraft extends BaseModel {
   @hasOne(() => User)
   public user: HasOne<typeof User>
 
-  @hasOne(() => Job)
-  public jobs: HasOne<typeof Job>
-
-  @hasOne(() => Stat)
-  public stats: HasOne<typeof Stat>
+  @hasOne(() => Arkhane)
+  public arkhane: HasOne<typeof Arkhane>
 
   @manyToMany(() => Permission)
   public permissions: ManyToMany<typeof Permission>
