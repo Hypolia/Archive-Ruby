@@ -17,12 +17,39 @@
 | import './routes/customer'
 |
 */
-
+const routes = [
+  {name: 'Utilisateur', link: [
+      {name: "Créer Utilisateur", url: '/doc/user/create-user'},
+      {name: "Get Utilisateur", url: '/doc/user/get-user'},
+      {name: "Update Utilisateur", url: '/doc/user/update-user'},
+      {name: "Destroy Utilisateur", url: '/doc/user/destroy-user'},
+    ]},
+  {name: 'Discord', link: [
+      {name: "Créer Discord", url: 'create-discord'},
+      {name: "Get Discord", url: 'get-discord'},
+      {name: "Update Discord", url: 'update-discord'},
+      {name: "Destroy Discord", url: 'destroy-discord'},
+    ]},
+]
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.get('/', async ({ view }) => {
   return view.render('home')
 })
+Route.group(() => {
+  Route.get('/start', async ({view}) => {
+    return view.render('doc', {
+      routes: routes
+    })
+  })
+  Route.group(() => {
+    Route.get('/create-user', async ({view}) => {
+      return view.render('create-user', {
+        routes: routes
+      })
+    })
+  }).prefix('user')
+}).prefix('doc')
 
 
 Route.group(() => {
