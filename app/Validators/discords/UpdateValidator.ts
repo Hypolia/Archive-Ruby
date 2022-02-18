@@ -25,6 +25,10 @@ export default class UpdateValidator {
 	 *    ```
 	 */
   public schema = schema.create({
+    user_id: schema.string.optional({trim: true}, [rules.unique({
+      table: 'discords',
+      column: 'user_id'
+    })]),
 	  username: schema.string.optional({ trim: true}),
 	  level: schema.number.optional(),
 	  exp: schema.number.optional(),
