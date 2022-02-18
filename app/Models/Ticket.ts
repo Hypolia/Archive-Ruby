@@ -12,13 +12,11 @@ export default class Ticket extends BaseModel {
   }
 
   @column()
-  public userId: string
+  public discordId: string
 
   @column()
   public ticketId: string
 
-  @column()
-  public discordId: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

@@ -35,7 +35,6 @@ export default class DiscordsController {
       await user?.related('ticket').create({
         discordId: user.id,
         ticketId: data.ticket.ticketId,
-        userId: user.memberId
       })
     }
 
