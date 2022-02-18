@@ -7,7 +7,6 @@ export default class Tickets extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.string('id').primary()
       table.string('discord_id').unique()
-      table.string('user_id').unique()
       table.string('ticket_id').unique()
 
       table.timestamps(true, true)

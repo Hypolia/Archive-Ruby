@@ -6,8 +6,8 @@ export default class MinecraftPermission extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.string('minecraft_id').references('id').inTable('minecrafts')
-      table.string('permission_id').references('id').inTable('permissions')
+      table.string('minecraft_id').references('id').inTable('minecrafts').onDelete('CASCADE')
+      table.string('permission_id').references('id').inTable('permissions').onDelete('CASCADE')
 
       table.unique(['minecraft_id', 'permission_id'])
     })
