@@ -38,13 +38,18 @@ Route.get('/', async ({ view }) => {
 })
 Route.group(() => {
   Route.get('/start', async ({view}) => {
-    return view.render('doc', {
+    return view.render('doc/doc', {
       routes: routes
     })
   })
   Route.group(() => {
     Route.get('/create-user', async ({view}) => {
-      return view.render('create-user', {
+      return view.render('doc/user/create-user', {
+        routes: routes
+      })
+    })
+    Route.get('/get-user', async ({view}) => {
+      return view.render('doc/user/get-user', {
         routes: routes
       })
     })
