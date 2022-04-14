@@ -66,7 +66,7 @@ export default class UsersController {
   | objet User dans la table 'user' avec plusieurs paramètres
    */
   public async store({ request }: HttpContextContract) {
-    const data = await request.validate(StoreValidator)
+    const data = await request.validate(StoreValidtor)
     const userCreate = await User.create(data)
     return { userCreate }
   }
